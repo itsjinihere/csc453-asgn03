@@ -1,0 +1,33 @@
+Name: Sreerenjini Surendran Namboothiri (snamboot)
+
+Program: dine (Dining Philosophers with POSIX semaphores)
+
+Build:
+  make            # builds 'dine' using -Wall -std=c89 and links pthread, rt
+
+Run:
+  ./dine [cycles]
+  Example: ./dine 2
+
+Design notes (differences vs. sample solution):
+- Deadlock avoidance uses a “host” counting semaphore set to N-1.
+  This breaks circular wait without needing a big global monitor.
+- Forks are tracked by owner per-fork (array of ints), not per-
+  philosopher bit vectors. The board derives L/R directly.
+- Output is one change per line (state/fork up/down), but the layout
+  is simpler than the PDF samples to keep it readable and within 80.
+- Random delays use a different helper (dawdle_ms) and srand(time^pid).
+
+Standards:
+- Variable names and function names are descriptive.
+- No magic numbers (NUM_PHILOSOPHERS, max_ms params).
+- C89 declarations at block tops; compiles clean with -Wall/-Wextra.
+- Lines kept ≤ 80 columns (checked visually; should pass longlines.pl).
+
+Notes:
+- If NUM_PHILOSOPHERS is changed at compile time, the code adapts:
+    gcc -DNUM_PHILOSOPHERS=7 ...
+- Each line shows a single change as required in the handout.
+- If anything goes wrong (sem/pthread failure), the program prints an
+  error and exits with non-zero status.
+
