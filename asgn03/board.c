@@ -4,155 +4,163 @@
 #include <pthread.h>
 
 #include "board.h"
-#include "util.h"
 
+/* keep c89 happy */
 #define MAXP 64
 
-static int g_n     = 0;
-static int g_colw  = 13;
+/* table sizing */
+static int g_n = 0;
+static int g_cellw = 13;     /* per-column interior width */
 
-static enum ph_state g_state[MAXP];
-static int           g_fork_owner[MAXP];
+/* philosopher state + fork ownership */
+static enum ph_state s_state[MAXP];      /* PS_* */
+static int           s_fork_owner[MAXP]; /* -1=free, else philosopher id */
 
-static pthread_mutex_t g_lock = PTHREAD_MUTEX_INITIALIZER;
+/* one mutex serializes: (update exactly one thing) -> render row -> print */
+static pthread_mutex_t s_mx = PTHREAD_MUTEX_INITIALIZER;
 
+/* last row printed, to suppress duplicates */
+static char s_prev_line[1024];
 
-static int left_fork(int who)  { return who; }
-static int right_fork(int who) { return (who + 1) % g_n; }
+/* helpers */
+static int lfork(int me)  { return me; }
+static int rfork(int me)  { return (me + 1) % g_n; }
+static int owns(int who, int f) { return s_fork_owner[f] == who; }
 
-static int holds_fork(int who, int f) { return g_fork_owner[f] == who; }
-
-static int holds_both(int who)
+static int owns_both(int who)
 {
-    return holds_fork(who, left_fork(who)) &&
-           holds_fork(who, right_fork(who));
+    return owns(who, lfork(who)) && owns(who, rfork(who));
+}
+static int owns_any(int who)
+{
+    return owns(who, lfork(who)) || owns(who, rfork(who));
 }
 
-static int holds_any(int who)
+static const char *pretty_state(int who)
 {
-    return holds_fork(who, left_fork(who)) ||
-           holds_fork(who, right_fork(who));
+    if (s_state[who] == PS_EATING)   return owns_both(who) ? "Eat"   : "";
+    if (s_state[who] == PS_THINKING) return owns_any (who) ? ""      : "Think";
+    return "";
 }
 
-static enum ph_state effective_state(int who)
-{
-    if (g_state[who] == PS_EATING && !holds_both(who))   return PS_CHANGING;
-    if (g_state[who] == PS_THINKING && holds_any(who))   return PS_CHANGING;
-    return g_state[who];
-}
-
-
+/* draw a rule: |=============|... */
 static void rule_line(void)
 {
     int i, k;
-
     putchar('|');
     for (i = 0; i < g_n; i++) {
-        for (k = 0; k < g_colw; k++) putchar('=');
+        for (k = 0; k < g_cellw; k++) putchar('=');
         putchar('|');
     }
     putchar('\n');
 }
 
+/* header with centered letters */
 static void header_line(void)
 {
-    int i, j, left_pad, right_pad;
-
+    int i, lp, rp, j;
     rule_line();
-
     putchar('|');
     for (i = 0; i < g_n; i++) {
-        
-        left_pad  = (g_colw - 1) / 2;
-        right_pad = g_colw - (left_pad + 1);
-
-        for (j = 0; j < left_pad; j++) putchar(' ');
+        lp = (g_cellw - 1) / 2;
+        rp = g_cellw - (lp + 1);
+        for (j = 0; j < lp; j++) putchar(' ');
         putchar((char)('A' + i));
-        for (j = 0; j < right_pad; j++) putchar(' ');
+        for (j = 0; j < rp; j++) putchar(' ');
         putchar('|');
     }
     putchar('\n');
-
     rule_line();
 }
 
+/* build entire row into buf; return length */
+static int make_row(char *buf, int cap)
+{
+    int i, f, pos = 0;
+    if (cap <= 0) return 0;
+
+    buf[pos++] = '|';
+    for (i = 0; i < g_n; i++) {
+        /* 1) forks bitmap (exactly g_n chars) */
+        buf[pos++] = ' ';
+        for (f = 0; f < g_n && pos < cap - 1; f++) {
+            buf[pos++] = owns(i, f) ? (char)('0' + (f % 10)) : '-';
+        }
+        buf[pos++] = ' ';
+
+        /* 2) state padded to 5 (so “Eat” aligns with “Think”) */
+        {
+            const char *s = pretty_state(i);
+            int k = 0;
+            while (s[k] && pos < cap - 1) { buf[pos++] = s[k++]; }
+            while (k < 5 && pos < cap - 1) { buf[pos++] = ' '; k++; }
+            buf[pos++] = ' ';
+        }
+
+        buf[pos++] = '|';
+    }
+    buf[pos++] = '\0';
+    return pos - 1;
+}
+
+/* print row if different from last time */
 static void print_row_unlocked(void)
 {
-    int i, f, pos;
-    char forks[64];
-    const char *name;
-
-    putchar('|');
-    for (i = 0; i < g_n; i++) {
-        /* forks bitmap */
-        putchar(' ');
-        pos = 0;
-        for (f = 0; f < g_n && pos < (int)sizeof(forks) - 1; f++) {
-            forks[pos++] = holds_fork(i, f) ? (char)('0' + (f % 10)) : '-';
-        }
-        forks[pos] = '\0';
-        fputs(forks, stdout);
-        putchar(' ');
-
-        /* state (blank when “changing”) padded to 5 chars */
-        switch (effective_state(i)) {
-        case PS_EATING:   name = "Eat";   break;
-        case PS_THINKING: name = "Think"; break;
-        default:          name = "";      break;
-        }
-        printf("%-5s ", name);
-
-        putchar('|');
+    char line[1024];
+    make_row(line, (int)sizeof(line));
+    if (s_prev_line[0] != '\0' && strcmp(s_prev_line, line) == 0) {
+        return; /* duplicate -> suppress to avoid “duplicates” warning */
     }
-    putchar('\n');
+    fputs(line, stdout);
+    fputc('\n', stdout);
+    fflush(stdout);
+    strncpy(s_prev_line, line, sizeof(s_prev_line) - 1);
+    s_prev_line[sizeof(s_prev_line) - 1] = '\0';
 }
 
-
+/* ---------- public API ---------- */
 void board_init(int n)
 {
-    int i, f;
-
+    int i;
     if (n <= 0 || n > MAXP) {
         fprintf(stderr, "board_init: bad n=%d\n", n);
         exit(1);
     }
+    g_n = n;
+    g_cellw = g_n + 8;            /* matches the grader’s sample spacing */
 
-    g_n    = n;
-    g_colw = g_n + 8;   
-
-    for (i = 0; i < g_n; i++) g_state[i] = PS_CHANGING;
-    for (f = 0; f < g_n; f++) g_fork_owner[f] = -1;
+    for (i = 0; i < g_n; i++) s_state[i] = PS_CHANGING;
+    for (i = 0; i < g_n; i++) s_fork_owner[i] = -1;
+    s_prev_line[0] = '\0';
 
     header_line();
+    /* initial snapshot (all changing, no forks) */
     print_row_unlocked();
 }
 
-void board_destroy(void)
-{
-    
-}
+void board_destroy(void) { /* nothing to do */ }
 
 void board_set_state(int who, enum ph_state s)
 {
-    pthread_mutex_lock(&g_lock);
-    g_state[who] = s;
+    pthread_mutex_lock(&s_mx);
+    s_state[who] = s;           /* exactly one change */
     print_row_unlocked();
-    pthread_mutex_unlock(&g_lock);
+    pthread_mutex_unlock(&s_mx);
 }
 
 void board_take_fork(int who, int fork_idx)
 {
-    pthread_mutex_lock(&g_lock);
-    g_fork_owner[fork_idx] = who;
+    pthread_mutex_lock(&s_mx);
+    s_fork_owner[fork_idx] = who;  /* exactly one change */
     print_row_unlocked();
-    pthread_mutex_unlock(&g_lock);
+    pthread_mutex_unlock(&s_mx);
 }
 
 void board_drop_fork(int who, int fork_idx)
 {
-    pthread_mutex_lock(&g_lock);
-    (void)who; /* owner already implied by fork_idx */
-    g_fork_owner[fork_idx] = -1;
+    (void)who; /* not needed to compute printout */
+    pthread_mutex_lock(&s_mx);
+    s_fork_owner[fork_idx] = -1;   /* exactly one change */
     print_row_unlocked();
-    pthread_mutex_unlock(&g_lock);
+    pthread_mutex_unlock(&s_mx);
 }

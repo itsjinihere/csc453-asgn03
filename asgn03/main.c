@@ -22,14 +22,15 @@
 #error "Need at least 2 philosophers"
 #endif
 
+/* ---------- fork + “host” gate ---------- */
 #ifdef __APPLE__
-static sem_t *g_fork[NUM_PHILOSOPHERS];
-static char   g_fname[NUM_PHILOSOPHERS][64];
-static sem_t *g_host;
-static char   g_hname[64];
+static sem_t *s_fork[NUM_PHILOSOPHERS];
+static char   s_fname[NUM_PHILOSOPHERS][64];
+static sem_t *s_host;
+static char   s_hname[64];
 #else
-static sem_t  g_fork[NUM_PHILOSOPHERS];
-static sem_t  g_host;
+static sem_t  s_fork[NUM_PHILOSOPHERS];
+static sem_t  s_host;
 #endif
 
 static int g_cycles = 1;
@@ -37,38 +38,28 @@ static int g_cycles = 1;
 static int left_fork(int who)  { return who; }
 static int right_fork(int who) { return (who + 1) % NUM_PHILOSOPHERS; }
 
-static void pick_up(int who, int fork_idx)
+/* take / drop a single fork, with board update printed as one change */
+static void take_one(int who, int fork_idx)
 {
 #ifdef __APPLE__
-    if (sem_wait(g_fork[fork_idx]) != 0) {
-        perror("sem_wait fork");
-        exit(1);
-    }
+    if (sem_wait(s_fork[fork_idx]) != 0) { perror("sem_wait fork"); exit(1); }
 #else
-    if (sem_wait(&g_fork[fork_idx]) != 0) {
-        perror("sem_wait fork");
-        exit(1);
-    }
+    if (sem_wait(&s_fork[fork_idx]) != 0) { perror("sem_wait fork"); exit(1); }
 #endif
-    board_take_fork(who, fork_idx);
+    board_take_fork(who, fork_idx);   /* <- one atomic change + print */
 }
 
-static void put_down(int who, int fork_idx)
+static void drop_one(int who, int fork_idx)
 {
-    board_drop_fork(who, fork_idx);
+    board_drop_fork(who, fork_idx);   /* <- one atomic change + print */
 #ifdef __APPLE__
-    if (sem_post(g_fork[fork_idx]) != 0) {
-        perror("sem_post fork");
-        exit(1);
-    }
+    if (sem_post(s_fork[fork_idx]) != 0) { perror("sem_post fork"); exit(1); }
 #else
-    if (sem_post(&g_fork[fork_idx]) != 0) {
-        perror("sem_post fork");
-        exit(1);
-    }
+    if (sem_post(&s_fork[fork_idx]) != 0) { perror("sem_post fork"); exit(1); }
 #endif
 }
 
+/* ---------- worker ---------- */
 static void *philosopher(void *arg)
 {
     int who = *(int *)arg;
@@ -76,62 +67,49 @@ static void *philosopher(void *arg)
     int rf  = right_fork(who);
     int i;
 
-    /* show changing before any fork action */
+    /* show “changing” before we start doing things */
     board_set_state(who, PS_CHANGING);
 
     for (i = 0; i < g_cycles; i++) {
 
-        board_set_state(who, PS_CHANGING);
-
+        /* gate: only N-1 eaters try to grab forks */
 #ifdef __APPLE__
-        if (sem_wait(g_host) != 0) {
-            perror("sem_wait host");
-            exit(1);
-        }
+        if (sem_wait(s_host) != 0) { perror("sem_wait host"); exit(1); }
 #else
-        if (sem_wait(&g_host) != 0) {
-            perror("sem_wait host");
-            exit(1);
-        }
+        if (sem_wait(&s_host) != 0) { perror("sem_wait host"); exit(1); }
 #endif
 
-        if ((who % 2) == 0) {
-            pick_up(who, lf);
-            pick_up(who, rf);
-        } else {
-            pick_up(who, rf);
-            pick_up(who, lf);
-        }
+        /* small asymmetry helps scheduling look nicer */
+        if ((who & 1) == 0) { take_one(who, lf); take_one(who, rf); }
+        else                { take_one(who, rf); take_one(who, lf); }
 
-        board_set_state(who, PS_EATING);
+        board_set_state(who, PS_EATING);   /* one change */
         dawdle_ms(1000);
 
-        /* flip back to changing before releasing forks */
-        board_set_state(who, PS_CHANGING);
+        /* flip to “changing” before putting forks back */
+        board_set_state(who, PS_CHANGING); /* one change */
 
-        put_down(who, lf);
-        put_down(who, rf);
+        drop_one(who, lf);
+        drop_one(who, rf);
 
 #ifdef __APPLE__
-        if (sem_post(g_host) != 0) {
-            perror("sem_post host");
-            exit(1);
-        }
+        if (sem_post(s_host) != 0) { perror("sem_post host"); exit(1); }
 #else
-        if (sem_post(&g_host) != 0) {
-            perror("sem_post host");
-            exit(1);
-        }
+        if (sem_post(&s_host) != 0) { perror("sem_post host"); exit(1); }
 #endif
 
-        /* only after forks are down show thinking */
-        board_set_state(who, PS_THINKING);
+        /* only now it’s consistent to show “Think” (no forks held) */
+        board_set_state(who, PS_THINKING); /* one change */
         dawdle_ms(800);
+
+        /* go back to in-between */
+        board_set_state(who, PS_CHANGING); /* one change */
     }
 
     return NULL;
 }
 
+/* ---------- driver ---------- */
 int main(int argc, char **argv)
 {
     pthread_t tid[NUM_PHILOSOPHERS];
@@ -152,31 +130,26 @@ int main(int argc, char **argv)
 
 #ifdef __APPLE__
     for (i = 0; i < NUM_PHILOSOPHERS; i++) {
-        snprintf(g_fname[i], sizeof(g_fname[i]),
-                 "/dine_fork_%d_%ld", i, (long)getpid());
-        sem_unlink(g_fname[i]);
-        g_fork[i] = sem_open(g_fname[i], O_CREAT | O_EXCL, 0600, 1U);
-        if (g_fork[i] == SEM_FAILED) {
-            perror("sem_open fork");
-            return 1;
-    }   }
-    snprintf(g_hname, sizeof(g_hname), "/dine_host_%ld", (long)getpid());
-    sem_unlink(g_hname);
-    g_host = sem_open(g_hname, O_CREAT | O_EXCL, 0600,
-                      (unsigned)(NUM_PHILOSOPHERS - 1));
-    if (g_host == SEM_FAILED) {
-        perror("sem_open host");
-        return 1;
+        snprintf(s_fname[i], sizeof(s_fname[i]), "/dine_fork_%d_%ld",
+                 i, (long)getpid());
+        sem_unlink(s_fname[i]);
+        s_fork[i] = sem_open(s_fname[i], O_CREAT | O_EXCL, 0600, 1U);
+        if (s_fork[i] == SEM_FAILED) { perror("sem_open fork"); return 1; }
     }
+    snprintf(s_hname, sizeof(s_hname), "/dine_host_%ld", (long)getpid());
+    sem_unlink(s_hname);
+    s_host = sem_open(s_hname, O_CREAT | O_EXCL, 0600,
+                      (unsigned)(NUM_PHILOSOPHERS - 1));
+    if (s_host == SEM_FAILED) { perror("sem_open host"); return 1; }
 #else
     for (i = 0; i < NUM_PHILOSOPHERS; i++) {
-        if (sem_init(&g_fork[i], 0, 1U) != 0) {
+        if (sem_init(&s_fork[i], 0, 1U) != 0) {
             perror("sem_init fork");
             return 1;
-    }   }
-    if (sem_init(&g_host, 0, (unsigned)(NUM_PHILOSOPHERS - 1)) != 0) {
-        perror("sem_init host");
-        return 1;
+        }
+    }
+    if (sem_init(&s_host, 0, (unsigned)(NUM_PHILOSOPHERS - 1)) != 0) {
+        perror("sem_init host"); return 1;
     }
 #endif
 
@@ -185,32 +158,24 @@ int main(int argc, char **argv)
     for (i = 0; i < NUM_PHILOSOPHERS; i++) {
         ids[i] = i;
         if (pthread_create(&tid[i], NULL, philosopher, &ids[i]) != 0) {
-            perror("pthread_create");
-            return 1;
-    }   }
-
-    for (i = 0; i < NUM_PHILOSOPHERS; i++) {
-        pthread_join(tid[i], NULL);
+            perror("pthread_create"); return 1;
+        }
     }
+    for (i = 0; i < NUM_PHILOSOPHERS; i++) pthread_join(tid[i], NULL);
 
     board_destroy();
 
 #ifdef __APPLE__
     for (i = 0; i < NUM_PHILOSOPHERS; i++) {
-        if (g_fork[i]) {
-            sem_close(g_fork[i]);
-            sem_unlink(g_fname[i]);
-    }   }
-    if (g_host) {
-        sem_close(g_host);
-        sem_unlink(g_hname);
+        if (s_fork[i]) {
+            sem_close(s_fork[i]);
+            sem_unlink(s_fname[i]);
+        }
     }
+    if (s_host) { sem_close(s_host); sem_unlink(s_hname); }
 #else
-    for (i = 0; i < NUM_PHILOSOPHERS; i++) {
-        sem_destroy(&g_fork[i]);
-    }
-    sem_destroy(&g_host);
+    for (i = 0; i < NUM_PHILOSOPHERS; i++) sem_destroy(&s_fork[i]);
+    sem_destroy(&s_host);
 #endif
-
     return 0;
 }

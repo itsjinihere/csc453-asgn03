@@ -1,0 +1,2350 @@
+[snamboot@unix3 asgn03]$ ~pn-cs453/Demos/tryAsgn3
+
+------------------------
+Looking for source files
+------------------------
+
+Found: board.c board.h main.c util.c util.h
+
+-----------------------
+Looking for a Makefile
+----------------------
+
+Found: Makefile
+
+--------------------------------
+Checking for long lines (no program should have any lines > 80 chars)
+--------------------------------
+
+Line length ok.
+
+
+------------------------------------
+Building the application: "make dine"
+------------------------------------
+
+make dine
+gcc -Wall -Wextra -std=c89 -O2 -g -D_POSIX_C_SOURCE=200809L -DNUM_PHILOSOPHERS=5 -pthread   -c -o main.o main.c
+gcc -Wall -Wextra -std=c89 -O2 -g -D_POSIX_C_SOURCE=200809L -DNUM_PHILOSOPHERS=5 -pthread   -c -o board.o board.c
+gcc -Wall -Wextra -std=c89 -O2 -g -D_POSIX_C_SOURCE=200809L -DNUM_PHILOSOPHERS=5 -pthread   -c -o util.o util.c
+gcc -o dine main.o board.o util.o -pthread -lrt
+
+---------------
+checking for dine
+---------------
+
+
+--------------------------------------------------------
+Test Results:
+   These are the results of trying your dine
+a few times and checking to see if the results have
+any obvious errors. (e.g. neighbors eating at the same time)
+
+  Note: There can be errors that aren't caught by this.
+
+
+--------------------------------
+Testing dine   (timeout=300)
+--------------------------------
+
+
+$ ./dine 1
+  1: |=============|=============|=============|=============|=============|
+  2: |      A      |      B      |      C      |      D      |      E      |
+  3: |=============|=============|=============|=============|=============|
+  4: | -----       | -----       | -----       | -----       | -----       |
+  5: | 0----       | -----       | -----       | -----       | -----       |
+  6: | 01---       | -----       | -----       | -----       | -----       |
+  7: | 01--- Eat   | -----       | -----       | -----       | -----       |
+  8: | 01--- Eat   | --2--       | -----       | -----       | -----       |
+  9: | 01--- Eat   | --2--       | -----       | ----4       | -----       |
+ 10: | 01--- Eat   | --2--       | -----       | ---34       | -----       |
+ 11: | 01--- Eat   | --2--       | -----       | ---34 Eat   | -----       |
+ 12: | 01---       | --2--       | -----       | ---34 Eat   | -----       |
+ 13: | -1---       | --2--       | -----       | ---34 Eat   | -----       |
+ 14: | -----       | --2--       | -----       | ---34 Eat   | -----       |
+ 15: | ----- Think | --2--       | -----       | ---34 Eat   | -----       |
+ 16: | ----- Think | -12--       | -----       | ---34 Eat   | -----       |
+ 17: | ----- Think | -12-- Eat   | -----       | ---34 Eat   | -----       |
+ 18: | ----- Think | -12-- Eat   | -----       | ---34       | -----       |
+ 19: | ----- Think | -12-- Eat   | -----       | ----4       | -----       |
+ 20: | ----- Think | -12-- Eat   | -----       | -----       | -----       |
+ 21: | ----- Think | -12-- Eat   | -----       | ----- Think | -----       |
+ 22: | ----- Think | -12-- Eat   | -----       | ----- Think | ----4       |
+ 23: | ----- Think | -12-- Eat   | -----       | ----- Think | 0---4       |
+ 24: | ----- Think | -12-- Eat   | -----       | ----- Think | 0---4 Eat   |
+ 25: | ----- Think | -12-- Eat   | -----       | ----- Think | 0---4       |
+ 26: | ----- Think | -12-- Eat   | -----       | ----- Think | 0----       |
+ 27: | ----- Think | -12-- Eat   | -----       | ----- Think | -----       |
+ 28: | ----- Think | -12-- Eat   | -----       | ----- Think | ----- Think |
+ 29: | ----- Think | -12--       | -----       | ----- Think | ----- Think |
+ 30: | ----- Think | --2--       | -----       | ----- Think | ----- Think |
+ 31: | ----- Think | -----       | -----       | ----- Think | ----- Think |
+ 32: | ----- Think | ----- Think | -----       | ----- Think | ----- Think |
+ 33: | ----- Think | ----- Think | --2--       | ----- Think | ----- Think |
+ 34: | ----- Think | ----- Think | --23-       | ----- Think | ----- Think |
+ 35: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+ 36: | ----- Think | ----- Think | --23-       | ----- Think | ----- Think |
+ 37: | ----- Think | ----- Think | ---3-       | ----- Think | ----- Think |
+ 38: | ----- Think | ----- Think | -----       | ----- Think | ----- Think |
+ 39: | ----- Think | ----- Think | ----- Think | ----- Think | ----- Think |
+
+<exit ok>
+
+$ ./dine 5
+  1: |=============|=============|=============|=============|=============|
+  2: |      A      |      B      |      C      |      D      |      E      |
+  3: |=============|=============|=============|=============|=============|
+  4: | -----       | -----       | -----       | -----       | -----       |
+  5: | -----       | --2--       | -----       | -----       | -----       |
+  6: | -----       | -12--       | -----       | -----       | -----       |
+  7: | -----       | -12-- Eat   | -----       | -----       | -----       |
+  8: | 0----       | -12-- Eat   | -----       | -----       | -----       |
+  9: | 0----       | -12-- Eat   | -----       | -----       | ----4       |
+ 10: | 0----       | -12--       | -----       | -----       | ----4       |
+ 11: | 0----       | --2--       | -----       | -----       | ----4       |
+ 12: | 0----       | -----       | -----       | -----       | ----4       |
+ 13: | 0----       | ----- Think | -----       | -----       | ----4       |
+ 14: | 01---       | ----- Think | -----       | -----       | ----4       |
+ 15: | 01--- Eat   | ----- Think | -----       | -----       | ----4       |
+ 16: | 01--- Eat   | ----- Think | --2--       | -----       | ----4       |
+ 17: | 01--- Eat   | ----- Think | --23-       | -----       | ----4       |
+ 18: | 01--- Eat   | ----- Think | --23- Eat   | -----       | ----4       |
+ 19: | 01---       | ----- Think | --23- Eat   | -----       | ----4       |
+ 20: | -1---       | ----- Think | --23- Eat   | -----       | ----4       |
+ 21: | -----       | ----- Think | --23- Eat   | -----       | ----4       |
+ 22: | ----- Think | ----- Think | --23- Eat   | -----       | ----4       |
+ 23: | ----- Think | ----- Think | --23- Eat   | -----       | 0---4       |
+ 24: | ----- Think | ----- Think | --23- Eat   | -----       | 0---4 Eat   |
+ 25: | ----- Think | ----- Think | --23- Eat   | -----       | 0---4       |
+ 26: | ----- Think | ----- Think | --23- Eat   | -----       | 0----       |
+ 27: | ----- Think | ----- Think | --23- Eat   | -----       | -----       |
+ 28: | ----- Think | ----- Think | --23- Eat   | -----       | ----- Think |
+ 29: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+ 30: | 0----       | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+ 31: | 01---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+ 32: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | ----- Think |
+ 33: | 01---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+ 34: | -1---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+ 35: | -----       | ----- Think | --23- Eat   | ----4       | ----- Think |
+ 36: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+ 37: | ----- Think | ----- Think | --23-       | ----4       | ----- Think |
+ 38: | ----- Think | ----- Think | ---3-       | ----4       | ----- Think |
+ 39: | ----- Think | ----- Think | -----       | ----4       | ----- Think |
+ 40: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+ 41: | ----- Think | --2--       | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+ 42: | ----- Think | -12--       | ----- Think | ----4       | ----- Think |
+ 43: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+ 44: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+ 45: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+ 46: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+ 47: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+ 48: | ----- Think | -----       | ----- Think | ---34 Eat   | ----- Think |
+ 49: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+ 50: | 0----       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+ 51: | 01---       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+ 52: | 01--- Eat   | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+ 53: | 01--- Eat   | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+ 54: | 01--- Eat   | ----- Think | --2--       | ---34       | ----- Think |
+ 55: | 01--- Eat   | ----- Think | --2--       | ----4       | ----- Think |
+ 56: | 01--- Eat   | ----- Think | --2--       | -----       | ----- Think |
+ 57: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----- Think |
+ 58: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----4       |
+	 *** More than one state change per line.
+ 59: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----4       |
+ 60: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+ 61: | 01---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+ 62: | -1---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+ 63: | -----       | ----- Think | --23- Eat   | ----- Think | ----4       |
+ 64: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----4       |
+ 65: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+ 66: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+ 67: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+ 68: | ----- Think | ----- Think | ---3-       | ----- Think | 0---4 Eat   |
+ 69: | ----- Think | ----- Think | -----       | ----- Think | 0---4 Eat   |
+ 70: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+ 71: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+ 72: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+ 73: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+ 74: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+ 75: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+ 76: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+ 77: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+ 78: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+ 79: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+ 80: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+ 81: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+ 82: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+ 83: | ----- Think | -----       | ----- Think | ---34 Eat   | ----- Think |
+ 84: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+ 85: | ----- Think | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+ 86: | ----- Think | ----- Think | --2--       | ---34       | ----- Think |
+ 87: | ----- Think | ----- Think | --2--       | ----4       | ----- Think |
+ 88: | ----- Think | ----- Think | --2--       | -----       | ----- Think |
+ 89: | ----- Think | ----- Think | --2--       | ----- Think | ----- Think |
+ 90: | ----- Think | ----- Think | --23-       | ----- Think | ----- Think |
+ 91: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+ 92: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----4       |
+	 *** More than one state change per line.
+ 93: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+ 94: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+ 95: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+ 96: | ----- Think | ----- Think | ---3-       | ----- Think | 0---4 Eat   |
+ 97: | ----- Think | ----- Think | -----       | ----- Think | 0---4 Eat   |
+ 98: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+ 99: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+100: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+101: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+102: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+103: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+104: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+105: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+106: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+107: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+108: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+109: | 0----       | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+110: | 0----       | -12-- Eat   | ----- Think | ---34       | ----- Think |
+111: | 0----       | -12-- Eat   | ----- Think | ----4       | ----- Think |
+112: | 0----       | -12-- Eat   | ----- Think | -----       | ----- Think |
+113: | 0----       | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+114: | 0----       | -12-- Eat   | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+115: | 0----       | -12--       | ----- Think | ----- Think | ----4       |
+116: | 0----       | --2--       | ----- Think | ----- Think | ----4       |
+117: | 0----       | -----       | ----- Think | ----- Think | ----4       |
+118: | 0----       | ----- Think | ----- Think | ----- Think | ----4       |
+119: | 01---       | ----- Think | ----- Think | ----- Think | ----4       |
+120: | 01---       | ----- Think | --2--       | ----- Think | ----4       |
+	 *** More than one state change per line.
+121: | 01---       | ----- Think | --23-       | ----- Think | ----4       |
+122: | 01---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+123: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+124: | 01---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+125: | -1---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+126: | -----       | ----- Think | --23- Eat   | ----- Think | ----4       |
+127: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----4       |
+128: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+129: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+130: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+131: | ----- Think | ----- Think | ---3-       | ----- Think | 0---4 Eat   |
+132: | ----- Think | ----- Think | -----       | ----- Think | 0---4 Eat   |
+133: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+134: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+135: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+136: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+137: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+138: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+139: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+140: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+141: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+142: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+143: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+144: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+145: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+146: | ----- Think | -----       | ----- Think | ---34 Eat   | ----- Think |
+147: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+148: | ----- Think | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+149: | 0----       | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+150: | 01---       | ----- Think | --2--       | ---34 Eat   | ----- Think |
+151: | 01--- Eat   | ----- Think | --2--       | ---34 Eat   | ----- Think |
+152: | 01--- Eat   | ----- Think | --2--       | ---34       | ----- Think |
+153: | 01--- Eat   | ----- Think | --2--       | ----4       | ----- Think |
+154: | 01--- Eat   | ----- Think | --2--       | -----       | ----- Think |
+155: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----- Think |
+156: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----4       |
+	 *** More than one state change per line.
+157: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----4       |
+158: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+159: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----4       |
+160: | 01--- Eat   | ----- Think | ---3-       | ----- Think | ----4       |
+161: | 01--- Eat   | ----- Think | -----       | ----- Think | ----4       |
+162: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----4       |
+163: | 01---       | ----- Think | ----- Think | ----- Think | ----4       |
+164: | -1---       | ----- Think | ----- Think | ----- Think | ----4       |
+165: | -----       | ----- Think | ----- Think | ----- Think | ----4       |
+166: | ----- Think | ----- Think | ----- Think | ----- Think | ----4       |
+167: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4       |
+168: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+169: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4       |
+170: | ----- Think | ----- Think | ----- Think | ----- Think | 0----       |
+171: | ----- Think | ----- Think | ----- Think | ----- Think | -----       |
+172: | ----- Think | ----- Think | ----- Think | ----- Think | ----- Think |
+173: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+174: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+175: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+176: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+177: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+178: | ----- Think | ----- Think | ----- Think | -----       | ----- Think |
+179: | ----- Think | ----- Think | ----- Think | ----- Think | ----- Think |
+
+Summary for Output.96892/output.5:
+
+  Line 30: More than one state change per line.
+  Line 41: More than one state change per line.
+  Line 50: More than one state change per line.
+  Line 53: More than one state change per line.
+  Line 58: More than one state change per line.
+  Line 71: More than one state change per line.
+  Line 78: More than one state change per line.
+  Line 85: More than one state change per line.
+  Line 92: More than one state change per line.
+  Line 99: More than one state change per line.
+  Line 106: More than one state change per line.
+  Line 109: More than one state change per line.
+  Line 114: More than one state change per line.
+  Line 120: More than one state change per line.
+  Line 134: More than one state change per line.
+  Line 141: More than one state change per line.
+  Line 148: More than one state change per line.
+  Line 149: More than one state change per line.
+  Line 156: More than one state change per line.
+  Line 173: More than one state change per line.
+
+<exit ok>
+
+$ ./dine 10
+  1: |=============|=============|=============|=============|=============|
+  2: |      A      |      B      |      C      |      D      |      E      |
+  3: |=============|=============|=============|=============|=============|
+  4: | -----       | -----       | -----       | -----       | -----       |
+  5: | 0----       | -----       | -----       | -----       | -----       |
+  6: | 01---       | -----       | -----       | -----       | -----       |
+  7: | 01--- Eat   | -----       | -----       | -----       | -----       |
+  8: | 01--- Eat   | --2--       | -----       | -----       | -----       |
+  9: | 01--- Eat   | --2--       | -----       | ----4       | -----       |
+ 10: | 01--- Eat   | --2--       | -----       | ---34       | -----       |
+ 11: | 01--- Eat   | --2--       | -----       | ---34 Eat   | -----       |
+ 12: | 01--- Eat   | --2--       | -----       | ---34       | -----       |
+ 13: | 01--- Eat   | --2--       | -----       | ----4       | -----       |
+ 14: | 01--- Eat   | --2--       | -----       | -----       | -----       |
+ 15: | 01--- Eat   | --2--       | -----       | ----- Think | -----       |
+ 16: | 01--- Eat   | --2--       | -----       | ----- Think | ----4       |
+ 17: | 01---       | --2--       | -----       | ----- Think | ----4       |
+ 18: | -1---       | --2--       | -----       | ----- Think | ----4       |
+ 19: | -----       | --2--       | -----       | ----- Think | ----4       |
+ 20: | ----- Think | --2--       | -----       | ----- Think | ----4       |
+ 21: | ----- Think | -12--       | -----       | ----- Think | ----4       |
+ 22: | ----- Think | -12-- Eat   | -----       | ----- Think | ----4       |
+ 23: | ----- Think | -12-- Eat   | -----       | ----- Think | 0---4       |
+ 24: | ----- Think | -12-- Eat   | -----       | ----- Think | 0---4 Eat   |
+ 25: | ----- Think | -12--       | -----       | ----- Think | 0---4 Eat   |
+ 26: | ----- Think | --2--       | -----       | ----- Think | 0---4 Eat   |
+ 27: | ----- Think | -----       | -----       | ----- Think | 0---4 Eat   |
+ 28: | ----- Think | ----- Think | -----       | ----- Think | 0---4 Eat   |
+ 29: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+ 30: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+ 31: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+ 32: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+ 33: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+ 34: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+ 35: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+ 36: | 0----       | ----- Think | --23- Eat   | ----- Think | ----- Think |
+	 *** More than one state change per line.
+ 37: | 01---       | ----- Think | --23- Eat   | ----- Think | ----- Think |
+ 38: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+ 39: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+ 40: | 01--- Eat   | ----- Think | --23-       | ----4       | ----- Think |
+ 41: | 01--- Eat   | ----- Think | ---3-       | ----4       | ----- Think |
+ 42: | 01--- Eat   | ----- Think | -----       | ----4       | ----- Think |
+ 43: | 01--- Eat   | --2--       | -----       | ----4       | ----- Think |
+	 *** More than one state change per line.
+ 44: | 01--- Eat   | --2--       | -----       | ---34       | ----- Think |
+ 45: | 01--- Eat   | --2--       | -----       | ---34 Eat   | ----- Think |
+ 46: | 01--- Eat   | --2--       | ----- Think | ---34 Eat   | ----- Think |
+ 47: | 01--- Eat   | --2--       | ----- Think | ---34       | ----- Think |
+ 48: | 01--- Eat   | --2--       | ----- Think | ----4       | ----- Think |
+ 49: | 01--- Eat   | --2--       | ----- Think | -----       | ----- Think |
+ 50: | 01--- Eat   | --2--       | ----- Think | -----       | ----4       |
+	 *** More than one state change per line.
+ 51: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----4       |
+ 52: | 01---       | --2--       | ----- Think | ----- Think | ----4       |
+ 53: | -1---       | --2--       | ----- Think | ----- Think | ----4       |
+ 54: | -----       | --2--       | ----- Think | ----- Think | ----4       |
+ 55: | ----- Think | --2--       | ----- Think | ----- Think | ----4       |
+ 56: | ----- Think | -12--       | ----- Think | ----- Think | ----4       |
+ 57: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----4       |
+ 58: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+ 59: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+ 60: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+ 61: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+ 62: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+ 63: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+ 64: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+ 65: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+ 66: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+ 67: | 0----       | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+ 68: | 0----       | -12-- Eat   | ----- Think | ---34       | ----- Think |
+ 69: | 0----       | -12-- Eat   | ----- Think | ----4       | ----- Think |
+ 70: | 0----       | -12-- Eat   | ----- Think | -----       | ----- Think |
+ 71: | 0----       | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+ 72: | 0----       | -12--       | ----- Think | ----- Think | ----- Think |
+ 73: | 0----       | --2--       | ----- Think | ----- Think | ----- Think |
+ 74: | 0----       | -----       | ----- Think | ----- Think | ----- Think |
+ 75: | 0----       | ----- Think | ----- Think | ----- Think | ----- Think |
+ 76: | 01---       | ----- Think | ----- Think | ----- Think | ----- Think |
+ 77: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----- Think |
+ 78: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----- Think |
+	 *** More than one state change per line.
+ 79: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----- Think |
+ 80: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+ 81: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+ 82: | 01--- Eat   | ----- Think | --23-       | ----4       | ----- Think |
+ 83: | 01--- Eat   | ----- Think | ---3-       | ----4       | ----- Think |
+ 84: | 01--- Eat   | ----- Think | -----       | ----4       | ----- Think |
+ 85: | 01--- Eat   | ----- Think | ----- Think | ----4       | ----- Think |
+ 86: | 01--- Eat   | ----- Think | ----- Think | ---34       | ----- Think |
+ 87: | 01--- Eat   | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+ 88: | 01--- Eat   | --2--       | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+ 89: | 01--- Eat   | --2--       | ----- Think | ---34       | ----- Think |
+ 90: | 01--- Eat   | --2--       | ----- Think | ----4       | ----- Think |
+ 91: | 01--- Eat   | --2--       | ----- Think | -----       | ----- Think |
+ 92: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----- Think |
+ 93: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+ 94: | 01---       | --2--       | ----- Think | ----- Think | ----4       |
+ 95: | -1---       | --2--       | ----- Think | ----- Think | ----4       |
+ 96: | -----       | --2--       | ----- Think | ----- Think | ----4       |
+ 97: | ----- Think | --2--       | ----- Think | ----- Think | ----4       |
+ 98: | ----- Think | --2--       | ----- Think | ----- Think | 0---4       |
+ 99: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+100: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+101: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+102: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+103: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+104: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+105: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+106: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+107: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+108: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+109: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+110: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+111: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+112: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+113: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+114: | 0----       | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+115: | 01---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+116: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | ----- Think |
+117: | 01---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+118: | -1---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+119: | -----       | ----- Think | --23- Eat   | ----4       | ----- Think |
+120: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+121: | ----- Think | ----- Think | --23-       | ----4       | ----- Think |
+122: | ----- Think | ----- Think | ---3-       | ----4       | ----- Think |
+123: | ----- Think | ----- Think | -----       | ----4       | ----- Think |
+124: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+125: | ----- Think | --2--       | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+126: | ----- Think | -12--       | ----- Think | ----4       | ----- Think |
+127: | ----- Think | -12--       | ----- Think | ---34       | ----- Think |
+128: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+129: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+130: | 0----       | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+131: | 0----       | -12--       | ----- Think | ---34 Eat   | ----- Think |
+132: | 0----       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+133: | 0----       | -----       | ----- Think | ---34 Eat   | ----- Think |
+134: | 0----       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+135: | 01---       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+136: | 01--- Eat   | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+137: | 01--- Eat   | ----- Think | ----- Think | ---34       | ----- Think |
+138: | 01--- Eat   | ----- Think | ----- Think | ----4       | ----- Think |
+139: | 01--- Eat   | ----- Think | ----- Think | -----       | ----- Think |
+140: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----- Think |
+141: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+142: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+143: | 01---       | --2--       | ----- Think | ----- Think | ----4       |
+144: | -1---       | --2--       | ----- Think | ----- Think | ----4       |
+145: | -----       | --2--       | ----- Think | ----- Think | ----4       |
+146: | ----- Think | --2--       | ----- Think | ----- Think | ----4       |
+147: | ----- Think | --2--       | ----- Think | ----- Think | 0---4       |
+148: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+149: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+150: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+151: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+152: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+153: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+154: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+155: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+156: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+157: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+158: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+159: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+160: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+161: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+162: | 0----       | ----- Think | --23- Eat   | ----- Think | ----- Think |
+	 *** More than one state change per line.
+163: | 01---       | ----- Think | --23- Eat   | ----- Think | ----- Think |
+164: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+165: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+166: | 01---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+167: | -1---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+168: | -----       | ----- Think | --23- Eat   | ----4       | ----- Think |
+169: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+170: | ----- Think | ----- Think | --23-       | ----4       | ----- Think |
+171: | ----- Think | ----- Think | ---3-       | ----4       | ----- Think |
+172: | ----- Think | ----- Think | -----       | ----4       | ----- Think |
+173: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+174: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+175: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+176: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+177: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+178: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+179: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+180: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+181: | ----- Think | -12-- Eat   | ----- Think | -----       | ----- Think |
+182: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+183: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+184: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+185: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+186: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+187: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+188: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+189: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+190: | 0----       | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+	 *** More than one state change per line.
+191: | 0----       | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+192: | 0----       | -12-- Eat   | ----- Think | ---34       | ----- Think |
+193: | 0----       | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+194: | 0----       | -12--       | ----- Think | ---34 Eat   | ----- Think |
+195: | 0----       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+196: | 0----       | -----       | ----- Think | ---34 Eat   | ----- Think |
+197: | 0----       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+198: | 0----       | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+199: | 01---       | ----- Think | --2--       | ---34 Eat   | ----- Think |
+200: | 01--- Eat   | ----- Think | --2--       | ---34 Eat   | ----- Think |
+201: | 01--- Eat   | ----- Think | --2--       | ---34       | ----- Think |
+202: | 01--- Eat   | ----- Think | --2--       | ----4       | ----- Think |
+203: | 01--- Eat   | ----- Think | --2--       | -----       | ----- Think |
+204: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----- Think |
+205: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----- Think |
+206: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+207: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+	 *** More than one state change per line.
+208: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----4       |
+209: | 01--- Eat   | ----- Think | ---3-       | ----- Think | ----4       |
+210: | 01--- Eat   | ----- Think | -----       | ----- Think | ----4       |
+211: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----4       |
+212: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+213: | 01---       | --2--       | ----- Think | ----- Think | ----4       |
+214: | -1---       | --2--       | ----- Think | ----- Think | ----4       |
+215: | -----       | --2--       | ----- Think | ----- Think | ----4       |
+216: | ----- Think | --2--       | ----- Think | ----- Think | ----4       |
+217: | ----- Think | -12--       | ----- Think | ----- Think | ----4       |
+218: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----4       |
+219: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+220: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+221: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+222: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+223: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+224: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+225: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+226: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+227: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+228: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+229: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+230: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+231: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+232: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+233: | ----- Think | ----- Think | --23-       | ----4       | ----- Think |
+234: | ----- Think | ----- Think | ---3-       | ----4       | ----- Think |
+235: | ----- Think | ----- Think | -----       | ----4       | ----- Think |
+236: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+237: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+238: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+239: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+240: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+241: | ----- Think | ----- Think | ----- Think | -----       | ----- Think |
+242: | ----- Think | ----- Think | ----- Think | ----- Think | ----- Think |
+243: | ----- Think | --2--       | ----- Think | ----- Think | ----- Think |
+	 *** More than one state change per line.
+244: | ----- Think | -12--       | ----- Think | ----- Think | ----- Think |
+245: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+246: | 0----       | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+	 *** More than one state change per line.
+247: | 0----       | -12--       | ----- Think | ----- Think | ----- Think |
+248: | 0----       | --2--       | ----- Think | ----- Think | ----- Think |
+249: | 0----       | -----       | ----- Think | ----- Think | ----- Think |
+250: | 0----       | ----- Think | ----- Think | ----- Think | ----- Think |
+251: | 01---       | ----- Think | ----- Think | ----- Think | ----- Think |
+252: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----- Think |
+253: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----- Think |
+	 *** More than one state change per line.
+254: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----- Think |
+255: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+256: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+	 *** More than one state change per line.
+257: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----4       |
+258: | 01--- Eat   | ----- Think | ---3-       | ----- Think | ----4       |
+259: | 01--- Eat   | ----- Think | -----       | ----- Think | ----4       |
+260: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----4       |
+261: | 01---       | ----- Think | ----- Think | ----- Think | ----4       |
+262: | -1---       | ----- Think | ----- Think | ----- Think | ----4       |
+263: | -----       | ----- Think | ----- Think | ----- Think | ----4       |
+264: | ----- Think | ----- Think | ----- Think | ----- Think | ----4       |
+265: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4       |
+266: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+267: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+268: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+269: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+270: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+271: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+272: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+273: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+274: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+275: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+276: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+277: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+278: | ----- Think | ----- Think | ---3-       | ----- Think | 0---4 Eat   |
+279: | ----- Think | ----- Think | -----       | ----- Think | 0---4 Eat   |
+280: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+281: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+282: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+283: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+284: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+285: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+286: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+287: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+288: | 0----       | ----- Think | --23- Eat   | ----- Think | ----- Think |
+	 *** More than one state change per line.
+289: | 01---       | ----- Think | --23- Eat   | ----- Think | ----- Think |
+290: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+291: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+292: | 01---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+293: | -1---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+294: | -----       | ----- Think | --23- Eat   | ----4       | ----- Think |
+295: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+296: | ----- Think | ----- Think | --23-       | ----4       | ----- Think |
+297: | ----- Think | ----- Think | ---3-       | ----4       | ----- Think |
+298: | ----- Think | ----- Think | -----       | ----4       | ----- Think |
+299: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+300: | ----- Think | --2--       | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+301: | ----- Think | -12--       | ----- Think | ----4       | ----- Think |
+302: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+303: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+304: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+305: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+306: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+307: | ----- Think | -12-- Eat   | ----- Think | -----       | ----- Think |
+308: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+309: | 0----       | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+	 *** More than one state change per line.
+310: | 0----       | -12-- Eat   | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+311: | 0----       | -12--       | ----- Think | ----- Think | ----4       |
+312: | 0----       | --2--       | ----- Think | ----- Think | ----4       |
+313: | 0----       | -----       | ----- Think | ----- Think | ----4       |
+314: | 0----       | ----- Think | ----- Think | ----- Think | ----4       |
+315: | 01---       | ----- Think | ----- Think | ----- Think | ----4       |
+316: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----4       |
+317: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----4       |
+	 *** More than one state change per line.
+318: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----4       |
+319: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+320: | 01---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+321: | -1---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+322: | -----       | ----- Think | --23- Eat   | ----- Think | ----4       |
+323: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----4       |
+324: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+325: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+326: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+327: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+328: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+329: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+330: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+331: | ----- Think | ----- Think | --23-       | ----4       | ----- Think |
+332: | ----- Think | ----- Think | ---3-       | ----4       | ----- Think |
+333: | ----- Think | ----- Think | -----       | ----4       | ----- Think |
+334: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+335: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+336: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+337: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+338: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+339: | ----- Think | ----- Think | ----- Think | -----       | ----- Think |
+340: | ----- Think | ----- Think | ----- Think | ----- Think | ----- Think |
+341: | ----- Think | ----- Think | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+342: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4       |
+343: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+344: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4       |
+345: | ----- Think | ----- Think | ----- Think | ----- Think | 0----       |
+346: | ----- Think | ----- Think | ----- Think | ----- Think | -----       |
+347: | ----- Think | ----- Think | ----- Think | ----- Think | ----- Think |
+348: | ----- Think | ----- Think | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+349: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4       |
+350: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+351: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4       |
+352: | ----- Think | ----- Think | ----- Think | ----- Think | 0----       |
+353: | ----- Think | ----- Think | ----- Think | ----- Think | -----       |
+354: | ----- Think | ----- Think | ----- Think | ----- Think | ----- Think |
+
+Summary for Output.96892/output.10:
+
+  Line 36: More than one state change per line.
+  Line 39: More than one state change per line.
+  Line 43: More than one state change per line.
+  Line 50: More than one state change per line.
+  Line 64: More than one state change per line.
+  Line 67: More than one state change per line.
+  Line 78: More than one state change per line.
+  Line 81: More than one state change per line.
+  Line 88: More than one state change per line.
+  Line 93: More than one state change per line.
+  Line 106: More than one state change per line.
+  Line 113: More than one state change per line.
+  Line 114: More than one state change per line.
+  Line 125: More than one state change per line.
+  Line 130: More than one state change per line.
+  Line 141: More than one state change per line.
+  Line 142: More than one state change per line.
+  Line 155: More than one state change per line.
+  Line 162: More than one state change per line.
+  Line 165: More than one state change per line.
+  Line 176: More than one state change per line.
+  Line 183: More than one state change per line.
+  Line 190: More than one state change per line.
+  Line 191: More than one state change per line.
+  Line 198: More than one state change per line.
+  Line 207: More than one state change per line.
+  Line 212: More than one state change per line.
+  Line 225: More than one state change per line.
+  Line 232: More than one state change per line.
+  Line 243: More than one state change per line.
+  Line 246: More than one state change per line.
+  Line 253: More than one state change per line.
+  Line 256: More than one state change per line.
+  Line 267: More than one state change per line.
+  Line 274: More than one state change per line.
+  Line 281: More than one state change per line.
+  Line 288: More than one state change per line.
+  Line 291: More than one state change per line.
+  Line 300: More than one state change per line.
+  Line 309: More than one state change per line.
+  Line 310: More than one state change per line.
+  Line 317: More than one state change per line.
+  Line 330: More than one state change per line.
+  Line 341: More than one state change per line.
+  Line 348: More than one state change per line.
+
+<exit ok>
+
+$ ./dine 15
+  1: |=============|=============|=============|=============|=============|
+  2: |      A      |      B      |      C      |      D      |      E      |
+  3: |=============|=============|=============|=============|=============|
+  4: | -----       | -----       | -----       | -----       | -----       |
+  5: | -----       | --2--       | -----       | -----       | -----       |
+  6: | -----       | -12--       | -----       | -----       | -----       |
+  7: | -----       | -12-- Eat   | -----       | -----       | -----       |
+  8: | 0----       | -12-- Eat   | -----       | -----       | -----       |
+  9: | 0----       | -12-- Eat   | -----       | -----       | ----4       |
+ 10: | 0----       | -12--       | -----       | -----       | ----4       |
+ 11: | 0----       | --2--       | -----       | -----       | ----4       |
+ 12: | 0----       | -----       | -----       | -----       | ----4       |
+ 13: | 0----       | ----- Think | -----       | -----       | ----4       |
+ 14: | 01---       | ----- Think | -----       | -----       | ----4       |
+ 15: | 01--- Eat   | ----- Think | -----       | -----       | ----4       |
+ 16: | 01--- Eat   | ----- Think | --2--       | -----       | ----4       |
+ 17: | 01--- Eat   | ----- Think | --23-       | -----       | ----4       |
+ 18: | 01--- Eat   | ----- Think | --23- Eat   | -----       | ----4       |
+ 19: | 01---       | ----- Think | --23- Eat   | -----       | ----4       |
+ 20: | -1---       | ----- Think | --23- Eat   | -----       | ----4       |
+ 21: | -----       | ----- Think | --23- Eat   | -----       | ----4       |
+ 22: | ----- Think | ----- Think | --23- Eat   | -----       | ----4       |
+ 23: | ----- Think | ----- Think | --23- Eat   | -----       | 0---4       |
+ 24: | ----- Think | ----- Think | --23- Eat   | -----       | 0---4 Eat   |
+ 25: | ----- Think | ----- Think | --23-       | -----       | 0---4 Eat   |
+ 26: | ----- Think | ----- Think | ---3-       | -----       | 0---4 Eat   |
+ 27: | ----- Think | ----- Think | -----       | -----       | 0---4 Eat   |
+ 28: | ----- Think | ----- Think | ----- Think | -----       | 0---4 Eat   |
+ 29: | ----- Think | --2--       | ----- Think | -----       | 0---4 Eat   |
+	 *** More than one state change per line.
+ 30: | ----- Think | -12--       | ----- Think | -----       | 0---4 Eat   |
+ 31: | ----- Think | -12-- Eat   | ----- Think | -----       | 0---4 Eat   |
+ 32: | ----- Think | -12--       | ----- Think | -----       | 0---4 Eat   |
+ 33: | ----- Think | --2--       | ----- Think | -----       | 0---4 Eat   |
+ 34: | ----- Think | -----       | ----- Think | -----       | 0---4 Eat   |
+ 35: | ----- Think | ----- Think | ----- Think | -----       | 0---4 Eat   |
+ 36: | ----- Think | ----- Think | --2--       | -----       | 0---4 Eat   |
+	 *** More than one state change per line.
+ 37: | ----- Think | ----- Think | --23-       | -----       | 0---4 Eat   |
+ 38: | ----- Think | ----- Think | --23- Eat   | -----       | 0---4 Eat   |
+ 39: | ----- Think | ----- Think | --23- Eat   | -----       | 0---4       |
+ 40: | ----- Think | ----- Think | --23- Eat   | -----       | 0----       |
+ 41: | ----- Think | ----- Think | --23- Eat   | -----       | -----       |
+ 42: | ----- Think | ----- Think | --23- Eat   | -----       | ----- Think |
+ 43: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+ 44: | 0----       | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+ 45: | 01---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+ 46: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | ----- Think |
+ 47: | 01---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+ 48: | -1---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+ 49: | -----       | ----- Think | --23- Eat   | ----4       | ----- Think |
+ 50: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+ 51: | ----- Think | ----- Think | --23-       | ----4       | ----- Think |
+ 52: | ----- Think | ----- Think | ---3-       | ----4       | ----- Think |
+ 53: | ----- Think | ----- Think | -----       | ----4       | ----- Think |
+ 54: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+ 55: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+ 56: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+ 57: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+ 58: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+ 59: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+ 60: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+ 61: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+ 62: | ----- Think | -----       | ----- Think | ---34 Eat   | ----- Think |
+ 63: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+ 64: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+ 65: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+ 66: | ----- Think | ----- Think | ----- Think | -----       | ----- Think |
+ 67: | ----- Think | ----- Think | ----- Think | ----- Think | ----- Think |
+ 68: | ----- Think | ----- Think | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+ 69: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4       |
+ 70: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+ 71: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+ 72: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+ 73: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+ 74: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+ 75: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+ 76: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+ 77: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+ 78: | 0----       | ----- Think | --23- Eat   | ----- Think | ----- Think |
+	 *** More than one state change per line.
+ 79: | 01---       | ----- Think | --23- Eat   | ----- Think | ----- Think |
+ 80: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+ 81: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+ 82: | 01--- Eat   | ----- Think | --23-       | ----4       | ----- Think |
+ 83: | 01--- Eat   | ----- Think | ---3-       | ----4       | ----- Think |
+ 84: | 01--- Eat   | ----- Think | -----       | ----4       | ----- Think |
+ 85: | 01--- Eat   | ----- Think | ----- Think | ----4       | ----- Think |
+ 86: | 01--- Eat   | --2--       | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+ 87: | 01--- Eat   | --2--       | ----- Think | ---34       | ----- Think |
+ 88: | 01--- Eat   | --2--       | ----- Think | ---34 Eat   | ----- Think |
+ 89: | 01---       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+ 90: | -1---       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+ 91: | -----       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+ 92: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+ 93: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+ 94: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+ 95: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+ 96: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+ 97: | ----- Think | -12-- Eat   | ----- Think | -----       | ----- Think |
+ 98: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+ 99: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+100: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+101: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+102: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+103: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+104: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+105: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+106: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+107: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+108: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+109: | 0----       | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+110: | 0----       | -12--       | ----- Think | ---34 Eat   | ----- Think |
+111: | 0----       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+112: | 0----       | -----       | ----- Think | ---34 Eat   | ----- Think |
+113: | 0----       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+114: | 01---       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+115: | 01--- Eat   | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+116: | 01--- Eat   | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+117: | 01--- Eat   | ----- Think | --2--       | ---34       | ----- Think |
+118: | 01--- Eat   | ----- Think | --2--       | ----4       | ----- Think |
+119: | 01--- Eat   | ----- Think | --2--       | -----       | ----- Think |
+120: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----- Think |
+121: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----- Think |
+122: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+123: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+	 *** More than one state change per line.
+124: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----4       |
+125: | 01--- Eat   | ----- Think | ---3-       | ----- Think | ----4       |
+126: | 01--- Eat   | ----- Think | -----       | ----- Think | ----4       |
+127: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----4       |
+128: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+129: | 01---       | --2--       | ----- Think | ----- Think | ----4       |
+130: | -1---       | --2--       | ----- Think | ----- Think | ----4       |
+131: | -----       | --2--       | ----- Think | ----- Think | ----4       |
+132: | ----- Think | --2--       | ----- Think | ----- Think | ----4       |
+133: | ----- Think | -12--       | ----- Think | ----- Think | ----4       |
+134: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----4       |
+135: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+136: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+137: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+138: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+139: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+140: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+141: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+142: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+143: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+144: | 0----       | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+145: | 0----       | -12--       | ----- Think | ---34 Eat   | ----- Think |
+146: | 0----       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+147: | 0----       | -----       | ----- Think | ---34 Eat   | ----- Think |
+148: | 0----       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+149: | 01---       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+150: | 01--- Eat   | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+151: | 01--- Eat   | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+152: | 01---       | ----- Think | --2--       | ---34 Eat   | ----- Think |
+153: | -1---       | ----- Think | --2--       | ---34 Eat   | ----- Think |
+154: | -----       | ----- Think | --2--       | ---34 Eat   | ----- Think |
+155: | ----- Think | ----- Think | --2--       | ---34 Eat   | ----- Think |
+156: | ----- Think | ----- Think | --2--       | ---34       | ----- Think |
+157: | ----- Think | ----- Think | --2--       | ----4       | ----- Think |
+158: | ----- Think | ----- Think | --2--       | -----       | ----- Think |
+159: | ----- Think | ----- Think | --2--       | ----- Think | ----- Think |
+160: | ----- Think | ----- Think | --23-       | ----- Think | ----- Think |
+161: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+162: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----4       |
+	 *** More than one state change per line.
+163: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+164: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+165: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+166: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+167: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+168: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+169: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+170: | ----- Think | ----- Think | --23-       | ----4       | ----- Think |
+171: | ----- Think | ----- Think | ---3-       | ----4       | ----- Think |
+172: | ----- Think | ----- Think | -----       | ----4       | ----- Think |
+173: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+174: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+175: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+176: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+177: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+178: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+179: | 0----       | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+180: | 0----       | -12--       | ----- Think | ---34 Eat   | ----- Think |
+181: | 0----       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+182: | 0----       | -----       | ----- Think | ---34 Eat   | ----- Think |
+183: | 0----       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+184: | 01---       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+185: | 01--- Eat   | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+186: | 01--- Eat   | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+187: | 01---       | ----- Think | --2--       | ---34 Eat   | ----- Think |
+188: | -1---       | ----- Think | --2--       | ---34 Eat   | ----- Think |
+189: | -----       | ----- Think | --2--       | ---34 Eat   | ----- Think |
+190: | ----- Think | ----- Think | --2--       | ---34 Eat   | ----- Think |
+191: | ----- Think | ----- Think | --2--       | ---34       | ----- Think |
+192: | ----- Think | ----- Think | --2--       | ----4       | ----- Think |
+193: | ----- Think | ----- Think | --2--       | -----       | ----- Think |
+194: | ----- Think | ----- Think | --2--       | ----- Think | ----- Think |
+195: | ----- Think | ----- Think | --23-       | ----- Think | ----- Think |
+196: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+197: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----4       |
+	 *** More than one state change per line.
+198: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+199: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+200: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+201: | ----- Think | ----- Think | ---3-       | ----- Think | 0---4 Eat   |
+202: | ----- Think | ----- Think | -----       | ----- Think | 0---4 Eat   |
+203: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+204: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+205: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+206: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+207: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+208: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+209: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+210: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+211: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+212: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+213: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+214: | 0----       | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+215: | 0----       | -12--       | ----- Think | ---34 Eat   | ----- Think |
+216: | 0----       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+217: | 0----       | -----       | ----- Think | ---34 Eat   | ----- Think |
+218: | 0----       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+219: | 01---       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+220: | 01--- Eat   | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+221: | 01--- Eat   | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+222: | 01--- Eat   | ----- Think | --2--       | ---34       | ----- Think |
+223: | 01--- Eat   | ----- Think | --2--       | ----4       | ----- Think |
+224: | 01--- Eat   | ----- Think | --2--       | -----       | ----- Think |
+225: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----- Think |
+226: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----- Think |
+227: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+228: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+	 *** More than one state change per line.
+229: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----4       |
+230: | 01--- Eat   | ----- Think | ---3-       | ----- Think | ----4       |
+231: | 01--- Eat   | ----- Think | -----       | ----- Think | ----4       |
+232: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----4       |
+233: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+234: | 01---       | --2--       | ----- Think | ----- Think | ----4       |
+235: | -1---       | --2--       | ----- Think | ----- Think | ----4       |
+236: | -----       | --2--       | ----- Think | ----- Think | ----4       |
+237: | ----- Think | --2--       | ----- Think | ----- Think | ----4       |
+238: | ----- Think | --2--       | ----- Think | ----- Think | 0---4       |
+239: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+240: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+241: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+242: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+243: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+244: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+245: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+246: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+247: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+248: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+249: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+250: | ----- Think | ----- Think | ---3-       | ----- Think | 0---4 Eat   |
+251: | ----- Think | ----- Think | -----       | ----- Think | 0---4 Eat   |
+252: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+253: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4       |
+254: | ----- Think | ----- Think | ----- Think | ----- Think | 0----       |
+255: | ----- Think | ----- Think | ----- Think | ----- Think | -----       |
+256: | ----- Think | ----- Think | ----- Think | ----4       | -----       |
+	 *** More than one state change per line.
+257: | ----- Think | ----- Think | ----- Think | ---34       | -----       |
+258: | ----- Think | ----- Think | ----- Think | ---34 Eat   | -----       |
+259: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+260: | 0----       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+261: | 01---       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+262: | 01--- Eat   | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+263: | 01--- Eat   | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+264: | 01--- Eat   | ----- Think | --2--       | ---34       | ----- Think |
+265: | 01--- Eat   | ----- Think | --2--       | ----4       | ----- Think |
+266: | 01--- Eat   | ----- Think | --2--       | -----       | ----- Think |
+267: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----- Think |
+268: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----- Think |
+269: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+270: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+	 *** More than one state change per line.
+271: | 01---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+272: | -1---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+273: | -----       | ----- Think | --23- Eat   | ----- Think | ----4       |
+274: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----4       |
+275: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+276: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+277: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+278: | ----- Think | ----- Think | ---3-       | ----- Think | 0---4 Eat   |
+279: | ----- Think | ----- Think | -----       | ----- Think | 0---4 Eat   |
+280: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+281: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+282: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+283: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+284: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+285: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+286: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+287: | ----- Think | -12-- Eat   | ----- Think | ----4       | -----       |
+	 *** More than one state change per line.
+288: | ----- Think | -12-- Eat   | ----- Think | ---34       | -----       |
+289: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | -----       |
+290: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+291: | 0----       | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+292: | 0----       | -12--       | ----- Think | ---34 Eat   | ----- Think |
+293: | 0----       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+294: | 0----       | -----       | ----- Think | ---34 Eat   | ----- Think |
+295: | 0----       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+296: | 01---       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+297: | 01--- Eat   | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+298: | 01--- Eat   | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+299: | 01--- Eat   | ----- Think | --2--       | ---34       | ----- Think |
+300: | 01--- Eat   | ----- Think | --2--       | ----4       | ----- Think |
+301: | 01--- Eat   | ----- Think | --2--       | -----       | ----- Think |
+302: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----- Think |
+303: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----- Think |
+304: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+305: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+	 *** More than one state change per line.
+306: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----4       |
+307: | 01--- Eat   | ----- Think | ---3-       | ----- Think | ----4       |
+308: | 01--- Eat   | ----- Think | -----       | ----- Think | ----4       |
+309: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----4       |
+310: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+311: | 01---       | --2--       | ----- Think | ----- Think | ----4       |
+312: | -1---       | --2--       | ----- Think | ----- Think | ----4       |
+313: | -----       | --2--       | ----- Think | ----- Think | ----4       |
+314: | ----- Think | --2--       | ----- Think | ----- Think | ----4       |
+315: | ----- Think | --2--       | ----- Think | ----- Think | 0---4       |
+316: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+317: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+318: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+319: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+320: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+321: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+322: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+323: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+324: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+325: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+326: | 0----       | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+327: | 0----       | -12-- Eat   | ----- Think | ---34       | ----- Think |
+328: | 0----       | -12-- Eat   | ----- Think | ----4       | ----- Think |
+329: | 0----       | -12-- Eat   | ----- Think | -----       | ----- Think |
+330: | 0----       | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+331: | 0----       | -12--       | ----- Think | ----- Think | ----- Think |
+332: | 0----       | --2--       | ----- Think | ----- Think | ----- Think |
+333: | 0----       | -----       | ----- Think | ----- Think | ----- Think |
+334: | 0----       | ----- Think | ----- Think | ----- Think | ----- Think |
+335: | 01---       | ----- Think | ----- Think | ----- Think | ----- Think |
+336: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----- Think |
+337: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----- Think |
+	 *** More than one state change per line.
+338: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----- Think |
+339: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+340: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+	 *** More than one state change per line.
+341: | 01---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+342: | -1---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+343: | -----       | ----- Think | --23- Eat   | ----- Think | ----4       |
+344: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----4       |
+345: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+346: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+347: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+348: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+349: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+350: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+351: | 0----       | ----- Think | --23- Eat   | ----- Think | ----- Think |
+	 *** More than one state change per line.
+352: | 01---       | ----- Think | --23- Eat   | ----- Think | ----- Think |
+353: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+354: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+355: | 01---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+356: | -1---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+357: | -----       | ----- Think | --23- Eat   | ----4       | ----- Think |
+358: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+359: | ----- Think | ----- Think | --23-       | ----4       | ----- Think |
+360: | ----- Think | ----- Think | ---3-       | ----4       | ----- Think |
+361: | ----- Think | ----- Think | -----       | ----4       | ----- Think |
+362: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+363: | ----- Think | --2--       | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+364: | ----- Think | -12--       | ----- Think | ----4       | ----- Think |
+365: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+366: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+367: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+368: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+369: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+370: | ----- Think | -----       | ----- Think | ---34 Eat   | ----- Think |
+371: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+372: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+373: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+374: | ----- Think | ----- Think | ----- Think | -----       | ----- Think |
+375: | ----- Think | ----- Think | ----- Think | ----- Think | ----- Think |
+376: | ----- Think | ----- Think | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+377: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4       |
+378: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+379: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+380: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+381: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+382: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+383: | ----- Think | ----- Think | ---3-       | ----- Think | 0---4 Eat   |
+384: | ----- Think | ----- Think | -----       | ----- Think | 0---4 Eat   |
+385: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+386: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4       |
+387: | ----- Think | ----- Think | ----- Think | ----- Think | 0----       |
+388: | ----- Think | ----- Think | ----- Think | ----- Think | -----       |
+389: | ----- Think | ----- Think | ----- Think | ----- Think | ----- Think |
+390: | 0----       | ----- Think | ----- Think | ----- Think | ----- Think |
+	 *** More than one state change per line.
+391: | 01---       | ----- Think | ----- Think | ----- Think | ----- Think |
+392: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----- Think |
+393: | 01--- Eat   | ----- Think | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+394: | 01--- Eat   | ----- Think | ----- Think | ---34       | ----- Think |
+395: | 01--- Eat   | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+396: | 01--- Eat   | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+397: | 01---       | ----- Think | --2--       | ---34 Eat   | ----- Think |
+398: | -1---       | ----- Think | --2--       | ---34 Eat   | ----- Think |
+399: | -----       | ----- Think | --2--       | ---34 Eat   | ----- Think |
+400: | ----- Think | ----- Think | --2--       | ---34 Eat   | ----- Think |
+401: | ----- Think | ----- Think | --2--       | ---34       | ----- Think |
+402: | ----- Think | ----- Think | --2--       | ----4       | ----- Think |
+403: | ----- Think | ----- Think | --2--       | -----       | ----- Think |
+404: | ----- Think | ----- Think | --2--       | ----- Think | ----- Think |
+405: | ----- Think | ----- Think | --23-       | ----- Think | ----- Think |
+406: | ----- Think | ----- Think | --23-       | ----- Think | ----4       |
+	 *** More than one state change per line.
+407: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----4       |
+408: | 0----       | ----- Think | --23- Eat   | ----- Think | ----4       |
+	 *** More than one state change per line.
+409: | 01---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+410: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+411: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----4       |
+412: | 01--- Eat   | ----- Think | ---3-       | ----- Think | ----4       |
+413: | 01--- Eat   | ----- Think | -----       | ----- Think | ----4       |
+414: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----4       |
+415: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+416: | 01---       | --2--       | ----- Think | ----- Think | ----4       |
+417: | -1---       | --2--       | ----- Think | ----- Think | ----4       |
+418: | -----       | --2--       | ----- Think | ----- Think | ----4       |
+419: | ----- Think | --2--       | ----- Think | ----- Think | ----4       |
+420: | ----- Think | --2--       | ----- Think | ----- Think | 0---4       |
+421: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+422: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+423: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+424: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+425: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+426: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+427: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+428: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+429: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+430: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+431: | 0----       | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+432: | 0----       | -12-- Eat   | ----- Think | ---34       | ----- Think |
+433: | 0----       | -12-- Eat   | ----- Think | ----4       | ----- Think |
+434: | 0----       | -12-- Eat   | ----- Think | -----       | ----- Think |
+435: | 0----       | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+436: | 0----       | -12-- Eat   | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+437: | 0----       | -12--       | ----- Think | ----- Think | ----4       |
+438: | 0----       | --2--       | ----- Think | ----- Think | ----4       |
+439: | 0----       | -----       | ----- Think | ----- Think | ----4       |
+440: | 0----       | ----- Think | ----- Think | ----- Think | ----4       |
+441: | 01---       | ----- Think | ----- Think | ----- Think | ----4       |
+442: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----4       |
+443: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----4       |
+	 *** More than one state change per line.
+444: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----4       |
+445: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+446: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----4       |
+447: | 01--- Eat   | ----- Think | ---3-       | ----- Think | ----4       |
+448: | 01--- Eat   | ----- Think | -----       | ----- Think | ----4       |
+449: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----4       |
+450: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----4       |
+	 *** More than one state change per line.
+451: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----4       |
+452: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+453: | 01---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+454: | -1---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+455: | -----       | ----- Think | --23- Eat   | ----- Think | ----4       |
+456: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----4       |
+457: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+458: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+459: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+460: | ----- Think | ----- Think | ---3-       | ----- Think | 0---4 Eat   |
+461: | ----- Think | ----- Think | -----       | ----- Think | 0---4 Eat   |
+462: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+463: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+464: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+465: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+466: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+467: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+468: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+469: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+470: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+471: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+472: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+473: | 0----       | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+474: | 0----       | -12--       | ----- Think | ---34 Eat   | ----- Think |
+475: | 0----       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+476: | 0----       | -----       | ----- Think | ---34 Eat   | ----- Think |
+477: | 0----       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+478: | 01---       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+479: | 01--- Eat   | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+480: | 01--- Eat   | ----- Think | ----- Think | ---34       | ----- Think |
+481: | 01--- Eat   | ----- Think | ----- Think | ----4       | ----- Think |
+482: | 01--- Eat   | ----- Think | ----- Think | -----       | ----- Think |
+483: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----- Think |
+484: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+485: | 01---       | ----- Think | ----- Think | ----- Think | ----4       |
+486: | -1---       | ----- Think | ----- Think | ----- Think | ----4       |
+487: | -----       | ----- Think | ----- Think | ----- Think | ----4       |
+488: | ----- Think | ----- Think | ----- Think | ----- Think | ----4       |
+489: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4       |
+490: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+491: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+492: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+493: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+494: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+495: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+496: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+497: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+498: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+499: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+500: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+501: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+502: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+503: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+504: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+505: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4       |
+506: | ----- Think | ----- Think | ----- Think | ----- Think | 0----       |
+507: | ----- Think | ----- Think | ----- Think | ----- Think | -----       |
+508: | ----- Think | ----- Think | ----- Think | ----- Think | ----- Think |
+509: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+510: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+511: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+512: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+513: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+514: | ----- Think | ----- Think | ----- Think | -----       | ----- Think |
+515: | ----- Think | ----- Think | ----- Think | ----- Think | ----- Think |
+516: | ----- Think | ----- Think | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+517: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4       |
+518: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+519: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4       |
+520: | ----- Think | ----- Think | ----- Think | ----- Think | 0----       |
+521: | ----- Think | ----- Think | ----- Think | ----- Think | -----       |
+522: | ----- Think | ----- Think | ----- Think | ----- Think | ----- Think |
+523: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+524: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+525: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+526: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+527: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+528: | ----- Think | ----- Think | ----- Think | -----       | ----- Think |
+529: | ----- Think | ----- Think | ----- Think | ----- Think | ----- Think |
+
+Summary for Output.96892/output.15:
+
+  Line 29: More than one state change per line.
+  Line 36: More than one state change per line.
+  Line 44: More than one state change per line.
+  Line 57: More than one state change per line.
+  Line 68: More than one state change per line.
+  Line 71: More than one state change per line.
+  Line 78: More than one state change per line.
+  Line 81: More than one state change per line.
+  Line 86: More than one state change per line.
+  Line 99: More than one state change per line.
+  Line 106: More than one state change per line.
+  Line 109: More than one state change per line.
+  Line 116: More than one state change per line.
+  Line 123: More than one state change per line.
+  Line 128: More than one state change per line.
+  Line 141: More than one state change per line.
+  Line 144: More than one state change per line.
+  Line 151: More than one state change per line.
+  Line 162: More than one state change per line.
+  Line 169: More than one state change per line.
+  Line 176: More than one state change per line.
+  Line 179: More than one state change per line.
+  Line 186: More than one state change per line.
+  Line 197: More than one state change per line.
+  Line 204: More than one state change per line.
+  Line 211: More than one state change per line.
+  Line 214: More than one state change per line.
+  Line 221: More than one state change per line.
+  Line 228: More than one state change per line.
+  Line 233: More than one state change per line.
+  Line 246: More than one state change per line.
+  Line 256: More than one state change per line.
+  Line 260: More than one state change per line.
+  Line 263: More than one state change per line.
+  Line 270: More than one state change per line.
+  Line 281: More than one state change per line.
+  Line 287: More than one state change per line.
+  Line 291: More than one state change per line.
+  Line 298: More than one state change per line.
+  Line 305: More than one state change per line.
+  Line 310: More than one state change per line.
+  Line 323: More than one state change per line.
+  Line 326: More than one state change per line.
+  Line 337: More than one state change per line.
+  Line 340: More than one state change per line.
+  Line 351: More than one state change per line.
+  Line 354: More than one state change per line.
+  Line 363: More than one state change per line.
+  Line 376: More than one state change per line.
+  Line 379: More than one state change per line.
+  Line 390: More than one state change per line.
+  Line 393: More than one state change per line.
+  Line 396: More than one state change per line.
+  Line 406: More than one state change per line.
+  Line 408: More than one state change per line.
+  Line 415: More than one state change per line.
+  Line 428: More than one state change per line.
+  Line 431: More than one state change per line.
+  Line 436: More than one state change per line.
+  Line 443: More than one state change per line.
+  Line 450: More than one state change per line.
+  Line 463: More than one state change per line.
+  Line 470: More than one state change per line.
+  Line 473: More than one state change per line.
+  Line 484: More than one state change per line.
+  Line 491: More than one state change per line.
+  Line 498: More than one state change per line.
+  Line 509: More than one state change per line.
+  Line 516: More than one state change per line.
+  Line 523: More than one state change per line.
+
+<exit ok>
+
+$ ./dine 20
+  1: |=============|=============|=============|=============|=============|
+  2: |      A      |      B      |      C      |      D      |      E      |
+  3: |=============|=============|=============|=============|=============|
+  4: | -----       | -----       | -----       | -----       | -----       |
+  5: | -----       | -----       | --2--       | -----       | -----       |
+  6: | -----       | -----       | --23-       | -----       | -----       |
+  7: | -----       | -----       | --23- Eat   | -----       | -----       |
+  8: | 0----       | -----       | --23- Eat   | -----       | -----       |
+  9: | 01---       | -----       | --23- Eat   | -----       | -----       |
+ 10: | 01--- Eat   | -----       | --23- Eat   | -----       | -----       |
+ 11: | 01--- Eat   | -----       | --23- Eat   | -----       | ----4       |
+ 12: | 01---       | -----       | --23- Eat   | -----       | ----4       |
+ 13: | -1---       | -----       | --23- Eat   | -----       | ----4       |
+ 14: | -----       | -----       | --23- Eat   | -----       | ----4       |
+ 15: | ----- Think | -----       | --23- Eat   | -----       | ----4       |
+ 16: | ----- Think | -----       | --23- Eat   | -----       | 0---4       |
+ 17: | ----- Think | -----       | --23- Eat   | -----       | 0---4 Eat   |
+ 18: | ----- Think | -----       | --23- Eat   | -----       | 0---4       |
+ 19: | ----- Think | -----       | --23- Eat   | -----       | 0----       |
+ 20: | ----- Think | -----       | --23- Eat   | -----       | -----       |
+ 21: | ----- Think | -----       | --23- Eat   | -----       | ----- Think |
+ 22: | ----- Think | -----       | --23- Eat   | ----4       | ----- Think |
+ 23: | ----- Think | -----       | --23-       | ----4       | ----- Think |
+ 24: | ----- Think | -----       | ---3-       | ----4       | ----- Think |
+ 25: | ----- Think | -----       | -----       | ----4       | ----- Think |
+ 26: | ----- Think | -----       | -----       | ---34       | ----- Think |
+ 27: | ----- Think | -----       | -----       | ---34 Eat   | ----- Think |
+ 28: | ----- Think | -----       | ----- Think | ---34 Eat   | ----- Think |
+ 29: | 0----       | -----       | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+ 30: | 01---       | -----       | ----- Think | ---34 Eat   | ----- Think |
+ 31: | 01--- Eat   | -----       | ----- Think | ---34 Eat   | ----- Think |
+ 32: | 01--- Eat   | --2--       | ----- Think | ---34 Eat   | ----- Think |
+ 33: | 01--- Eat   | --2--       | ----- Think | ---34       | ----- Think |
+ 34: | 01--- Eat   | --2--       | ----- Think | ----4       | ----- Think |
+ 35: | 01--- Eat   | --2--       | ----- Think | -----       | ----- Think |
+ 36: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----- Think |
+ 37: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+ 38: | 01---       | --2--       | ----- Think | ----- Think | ----4       |
+ 39: | -1---       | --2--       | ----- Think | ----- Think | ----4       |
+ 40: | -----       | --2--       | ----- Think | ----- Think | ----4       |
+ 41: | ----- Think | --2--       | ----- Think | ----- Think | ----4       |
+ 42: | ----- Think | --2--       | ----- Think | ----- Think | 0---4       |
+ 43: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+ 44: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+ 45: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+ 46: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+ 47: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+ 48: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+ 49: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+ 50: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+ 51: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+ 52: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+ 53: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+ 54: | ----- Think | ----- Think | ---3-       | ----- Think | 0---4 Eat   |
+ 55: | ----- Think | ----- Think | -----       | ----- Think | 0---4 Eat   |
+ 56: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+ 57: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+ 58: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+ 59: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+ 60: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+ 61: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+ 62: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+ 63: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+ 64: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+ 65: | 0----       | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+ 66: | 01---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+ 67: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | ----- Think |
+ 68: | 01--- Eat   | ----- Think | --23-       | ----4       | ----- Think |
+ 69: | 01--- Eat   | ----- Think | ---3-       | ----4       | ----- Think |
+ 70: | 01--- Eat   | ----- Think | -----       | ----4       | ----- Think |
+ 71: | 01--- Eat   | ----- Think | ----- Think | ----4       | ----- Think |
+ 72: | 01--- Eat   | --2--       | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+ 73: | 01--- Eat   | --2--       | ----- Think | ---34       | ----- Think |
+ 74: | 01--- Eat   | --2--       | ----- Think | ---34 Eat   | ----- Think |
+ 75: | 01---       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+ 76: | -1---       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+ 77: | -----       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+ 78: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+ 79: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+ 80: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+ 81: | 0----       | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+ 82: | 0----       | -12-- Eat   | ----- Think | ---34       | ----- Think |
+ 83: | 0----       | -12-- Eat   | ----- Think | ----4       | ----- Think |
+ 84: | 0----       | -12-- Eat   | ----- Think | -----       | ----- Think |
+ 85: | 0----       | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+ 86: | 0----       | -12-- Eat   | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+ 87: | 0----       | -12--       | ----- Think | ----- Think | ----4       |
+ 88: | 0----       | --2--       | ----- Think | ----- Think | ----4       |
+ 89: | 0----       | -----       | ----- Think | ----- Think | ----4       |
+ 90: | 01---       | -----       | ----- Think | ----- Think | ----4       |
+ 91: | 01--- Eat   | -----       | ----- Think | ----- Think | ----4       |
+ 92: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----4       |
+ 93: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----4       |
+	 *** More than one state change per line.
+ 94: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----4       |
+ 95: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+ 96: | 01---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+ 97: | -1---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+ 98: | -----       | ----- Think | --23- Eat   | ----- Think | ----4       |
+ 99: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----4       |
+100: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+101: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+102: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+103: | ----- Think | ----- Think | ---3-       | ----- Think | 0---4 Eat   |
+104: | ----- Think | ----- Think | -----       | ----- Think | 0---4 Eat   |
+105: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+106: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+107: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+108: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+109: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+110: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+111: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+112: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+113: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+114: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+115: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+116: | 0----       | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+117: | 0----       | -12-- Eat   | ----- Think | ---34       | ----- Think |
+118: | 0----       | -12-- Eat   | ----- Think | ----4       | ----- Think |
+119: | 0----       | -12-- Eat   | ----- Think | -----       | ----- Think |
+120: | 0----       | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+121: | 0----       | -12--       | ----- Think | ----- Think | ----- Think |
+122: | 0----       | --2--       | ----- Think | ----- Think | ----- Think |
+123: | 0----       | -----       | ----- Think | ----- Think | ----- Think |
+124: | 01---       | -----       | ----- Think | ----- Think | ----- Think |
+125: | 01--- Eat   | -----       | ----- Think | ----- Think | ----- Think |
+126: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----- Think |
+127: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----- Think |
+	 *** More than one state change per line.
+128: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----- Think |
+129: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+130: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----- Think |
+131: | 01--- Eat   | ----- Think | ---3-       | ----- Think | ----- Think |
+132: | 01--- Eat   | ----- Think | -----       | ----- Think | ----- Think |
+133: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----- Think |
+134: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----- Think |
+	 *** More than one state change per line.
+135: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+136: | 01---       | --2--       | ----- Think | ----- Think | ----4       |
+137: | -1---       | --2--       | ----- Think | ----- Think | ----4       |
+138: | -----       | --2--       | ----- Think | ----- Think | ----4       |
+139: | ----- Think | --2--       | ----- Think | ----- Think | ----4       |
+140: | ----- Think | --2--       | ----- Think | ----- Think | 0---4       |
+141: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+142: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+143: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+144: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+145: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+146: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+147: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+148: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+149: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+150: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+151: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+152: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+153: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+154: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+155: | 0----       | ----- Think | --23- Eat   | ----- Think | ----- Think |
+	 *** More than one state change per line.
+156: | 01---       | ----- Think | --23- Eat   | ----- Think | ----- Think |
+157: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+158: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+159: | 01--- Eat   | ----- Think | --23-       | ----4       | ----- Think |
+160: | 01--- Eat   | ----- Think | ---3-       | ----4       | ----- Think |
+161: | 01--- Eat   | ----- Think | -----       | ----4       | ----- Think |
+162: | 01--- Eat   | ----- Think | ----- Think | ----4       | ----- Think |
+163: | 01--- Eat   | --2--       | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+164: | 01--- Eat   | --2--       | ----- Think | ---34       | ----- Think |
+165: | 01--- Eat   | --2--       | ----- Think | ---34 Eat   | ----- Think |
+166: | 01--- Eat   | --2--       | ----- Think | ---34       | ----- Think |
+167: | 01--- Eat   | --2--       | ----- Think | ----4       | ----- Think |
+168: | 01--- Eat   | --2--       | ----- Think | -----       | ----- Think |
+169: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----- Think |
+170: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+171: | 01---       | --2--       | ----- Think | ----- Think | ----4       |
+172: | -1---       | --2--       | ----- Think | ----- Think | ----4       |
+173: | -----       | --2--       | ----- Think | ----- Think | ----4       |
+174: | ----- Think | --2--       | ----- Think | ----- Think | ----4       |
+175: | ----- Think | --2--       | ----- Think | ----- Think | 0---4       |
+176: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+177: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+178: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+179: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+180: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+181: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+182: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+183: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+184: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+185: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+186: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+187: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+188: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+189: | ----- Think | ----- Think | --23- Eat   | ----4       | -----       |
+	 *** More than one state change per line.
+190: | 0----       | ----- Think | --23- Eat   | ----4       | -----       |
+	 *** More than one state change per line.
+191: | 01---       | ----- Think | --23- Eat   | ----4       | -----       |
+192: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | -----       |
+193: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | ----- Think |
+194: | 01---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+195: | -1---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+196: | -----       | ----- Think | --23- Eat   | ----4       | ----- Think |
+197: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+198: | ----- Think | ----- Think | --23-       | ----4       | ----- Think |
+199: | ----- Think | ----- Think | ---3-       | ----4       | ----- Think |
+200: | ----- Think | ----- Think | -----       | ----4       | ----- Think |
+201: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+202: | ----- Think | --2--       | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+203: | ----- Think | -12--       | ----- Think | ----4       | ----- Think |
+204: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+205: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+206: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+207: | 0----       | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+208: | 0----       | -12-- Eat   | ----- Think | ---34       | ----- Think |
+209: | 0----       | -12-- Eat   | ----- Think | ----4       | ----- Think |
+210: | 0----       | -12-- Eat   | ----- Think | -----       | ----- Think |
+211: | 0----       | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+212: | 0----       | -12-- Eat   | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+213: | 0----       | -12--       | ----- Think | ----- Think | ----4       |
+214: | 0----       | --2--       | ----- Think | ----- Think | ----4       |
+215: | 0----       | -----       | ----- Think | ----- Think | ----4       |
+216: | 01---       | -----       | ----- Think | ----- Think | ----4       |
+217: | 01---       | -----       | --2--       | ----- Think | ----4       |
+	 *** More than one state change per line.
+218: | 01---       | -----       | --23-       | ----- Think | ----4       |
+219: | 01---       | -----       | --23- Eat   | ----- Think | ----4       |
+220: | 01---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+221: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+222: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----4       |
+223: | 01--- Eat   | ----- Think | ---3-       | ----- Think | ----4       |
+224: | 01--- Eat   | ----- Think | -----       | ----- Think | ----4       |
+225: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----4       |
+226: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+227: | 01---       | --2--       | ----- Think | ----- Think | ----4       |
+228: | -1---       | --2--       | ----- Think | ----- Think | ----4       |
+229: | -----       | --2--       | ----- Think | ----- Think | ----4       |
+230: | ----- Think | --2--       | ----- Think | ----- Think | ----4       |
+231: | ----- Think | --2--       | ----- Think | ----- Think | 0---4       |
+232: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+233: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+234: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+235: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+236: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+237: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+238: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+239: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+240: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+241: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+242: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+243: | ----- Think | ----- Think | ---3-       | ----- Think | 0---4 Eat   |
+244: | ----- Think | ----- Think | -----       | ----- Think | 0---4 Eat   |
+245: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+246: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4       |
+247: | ----- Think | ----- Think | ----- Think | ----- Think | 0----       |
+248: | ----- Think | ----- Think | ----- Think | ----- Think | -----       |
+249: | ----- Think | ----- Think | ----- Think | ----- Think | ----- Think |
+250: | 0----       | ----- Think | ----- Think | ----- Think | ----- Think |
+	 *** More than one state change per line.
+251: | 01---       | ----- Think | ----- Think | ----- Think | ----- Think |
+252: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----- Think |
+253: | 01--- Eat   | ----- Think | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+254: | 01--- Eat   | ----- Think | ----- Think | ---34       | ----- Think |
+255: | 01--- Eat   | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+256: | 01--- Eat   | ----- Think | ----- Think | ---34       | ----- Think |
+257: | 01--- Eat   | ----- Think | ----- Think | ----4       | ----- Think |
+258: | 01--- Eat   | ----- Think | ----- Think | -----       | ----- Think |
+259: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----- Think |
+260: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----- Think |
+	 *** More than one state change per line.
+261: | 01--- Eat   | --2--       | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+262: | 01---       | --2--       | ----- Think | ----- Think | ----4       |
+263: | -1---       | --2--       | ----- Think | ----- Think | ----4       |
+264: | -----       | --2--       | ----- Think | ----- Think | ----4       |
+265: | ----- Think | --2--       | ----- Think | ----- Think | ----4       |
+266: | ----- Think | --2--       | ----- Think | ----- Think | 0---4       |
+267: | ----- Think | -12--       | ----- Think | ----- Think | 0---4       |
+268: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+269: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+270: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+271: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+272: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+273: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+274: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+275: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+276: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+277: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+278: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+279: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+280: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+281: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+282: | 0----       | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+283: | 01---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+284: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | ----- Think |
+285: | 01---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+286: | -1---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+287: | -----       | ----- Think | --23- Eat   | ----4       | ----- Think |
+288: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+289: | 0----       | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+290: | 01---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+291: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | ----- Think |
+292: | 01--- Eat   | ----- Think | --23-       | ----4       | ----- Think |
+293: | 01--- Eat   | ----- Think | ---3-       | ----4       | ----- Think |
+294: | 01--- Eat   | ----- Think | -----       | ----4       | ----- Think |
+295: | 01--- Eat   | ----- Think | ----- Think | ----4       | ----- Think |
+296: | 01--- Eat   | --2--       | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+297: | 01--- Eat   | --2--       | ----- Think | ---34       | ----- Think |
+298: | 01--- Eat   | --2--       | ----- Think | ---34 Eat   | ----- Think |
+299: | 01---       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+300: | -1---       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+301: | -----       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+302: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+303: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+304: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+305: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+306: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+307: | ----- Think | -12-- Eat   | ----- Think | -----       | ----- Think |
+308: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+309: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+310: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+311: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+312: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+313: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+314: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+315: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+316: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+317: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+318: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+319: | 0----       | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+320: | 0----       | -12--       | ----- Think | ---34 Eat   | ----- Think |
+321: | 0----       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+322: | 0----       | -----       | ----- Think | ---34 Eat   | ----- Think |
+323: | 0----       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+324: | 0----       | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+325: | 01---       | ----- Think | --2--       | ---34 Eat   | ----- Think |
+326: | 01--- Eat   | ----- Think | --2--       | ---34 Eat   | ----- Think |
+327: | 01--- Eat   | ----- Think | --2--       | ---34       | ----- Think |
+328: | 01--- Eat   | ----- Think | --2--       | ----4       | ----- Think |
+329: | 01--- Eat   | ----- Think | --2--       | -----       | ----- Think |
+330: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----- Think |
+331: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----- Think |
+332: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+333: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+	 *** More than one state change per line.
+334: | 01---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+335: | -1---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+336: | -----       | ----- Think | --23- Eat   | ----- Think | ----4       |
+337: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----4       |
+338: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+339: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+340: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+341: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+342: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+343: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+344: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+345: | 0----       | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+346: | 01---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+347: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | ----- Think |
+348: | 01--- Eat   | ----- Think | --23-       | ----4       | ----- Think |
+349: | 01--- Eat   | ----- Think | ---3-       | ----4       | ----- Think |
+350: | 01--- Eat   | ----- Think | -----       | ----4       | ----- Think |
+351: | 01--- Eat   | ----- Think | ----- Think | ----4       | ----- Think |
+352: | 01--- Eat   | --2--       | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+353: | 01--- Eat   | --2--       | ----- Think | ---34       | ----- Think |
+354: | 01--- Eat   | --2--       | ----- Think | ---34 Eat   | ----- Think |
+355: | 01---       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+356: | -1---       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+357: | -----       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+358: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+359: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+360: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+361: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+362: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+363: | ----- Think | -12-- Eat   | ----- Think | -----       | ----- Think |
+364: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+365: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+366: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+367: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+368: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+369: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+370: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+371: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+372: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+373: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+374: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+375: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+376: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+377: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+378: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+379: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+380: | 0----       | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+381: | 01---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+382: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | ----- Think |
+383: | 01--- Eat   | ----- Think | --23-       | ----4       | ----- Think |
+384: | 01--- Eat   | ----- Think | ---3-       | ----4       | ----- Think |
+385: | 01--- Eat   | ----- Think | -----       | ----4       | ----- Think |
+386: | 01--- Eat   | ----- Think | ----- Think | ----4       | ----- Think |
+387: | 01--- Eat   | ----- Think | ----- Think | ---34       | ----- Think |
+388: | 01--- Eat   | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+389: | 01--- Eat   | --2--       | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+390: | 01---       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+391: | -1---       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+392: | -----       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+393: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+394: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+395: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+396: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+397: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+398: | ----- Think | -12-- Eat   | ----- Think | -----       | ----- Think |
+399: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+400: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+401: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+402: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+403: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+404: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+405: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+406: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+407: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+408: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+409: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+410: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+411: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+412: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+413: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+414: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+415: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+416: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+417: | 0----       | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+418: | 0----       | -12--       | ----- Think | ---34 Eat   | ----- Think |
+419: | 0----       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+420: | 0----       | -----       | ----- Think | ---34 Eat   | ----- Think |
+421: | 01---       | -----       | ----- Think | ---34 Eat   | ----- Think |
+422: | 01--- Eat   | -----       | ----- Think | ---34 Eat   | ----- Think |
+423: | 01--- Eat   | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+424: | 01--- Eat   | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+425: | 01--- Eat   | ----- Think | --2--       | ---34       | ----- Think |
+426: | 01--- Eat   | ----- Think | --2--       | ----4       | ----- Think |
+427: | 01--- Eat   | ----- Think | --2--       | -----       | ----- Think |
+428: | 01--- Eat   | ----- Think | --2--       | ----- Think | ----- Think |
+429: | 01--- Eat   | ----- Think | --23-       | ----- Think | ----- Think |
+430: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+431: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+	 *** More than one state change per line.
+432: | 01---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+433: | -1---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+434: | -----       | ----- Think | --23- Eat   | ----- Think | ----4       |
+435: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----4       |
+436: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+437: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+438: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+439: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+440: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+441: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+442: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+443: | ----- Think | ----- Think | --23-       | ----4       | ----- Think |
+444: | ----- Think | ----- Think | ---3-       | ----4       | ----- Think |
+445: | ----- Think | ----- Think | -----       | ----4       | ----- Think |
+446: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+447: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+448: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+449: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+450: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+451: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+452: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+453: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+454: | ----- Think | -----       | ----- Think | ---34 Eat   | ----- Think |
+455: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+456: | 0----       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+457: | 01---       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+458: | 01--- Eat   | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+459: | 01---       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+460: | -1---       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+461: | -----       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+462: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+463: | ----- Think | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+464: | ----- Think | ----- Think | --2--       | ---34       | ----- Think |
+465: | ----- Think | ----- Think | --2--       | ----4       | ----- Think |
+466: | ----- Think | ----- Think | --2--       | -----       | ----- Think |
+467: | ----- Think | ----- Think | --23-       | -----       | ----- Think |
+468: | ----- Think | ----- Think | --23- Eat   | -----       | ----- Think |
+469: | ----- Think | ----- Think | --23- Eat   | -----       | ----4       |
+	 *** More than one state change per line.
+470: | ----- Think | ----- Think | --23- Eat   | -----       | 0---4       |
+471: | ----- Think | ----- Think | --23- Eat   | -----       | 0---4 Eat   |
+472: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+473: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+474: | ----- Think | ----- Think | ---3-       | ----- Think | 0---4 Eat   |
+475: | ----- Think | ----- Think | -----       | ----- Think | 0---4 Eat   |
+476: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+477: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+478: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+479: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+480: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+481: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+482: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+483: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+484: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4       |
+485: | ----- Think | ----- Think | ----- Think | ----- Think | 0----       |
+486: | ----- Think | ----- Think | ----- Think | ----- Think | -----       |
+487: | ----- Think | ----- Think | ----- Think | ----- Think | ----- Think |
+488: | 0----       | ----- Think | ----- Think | ----- Think | ----- Think |
+	 *** More than one state change per line.
+489: | 01---       | ----- Think | ----- Think | ----- Think | ----- Think |
+490: | 01--- Eat   | ----- Think | ----- Think | ----- Think | ----- Think |
+491: | 01--- Eat   | ----- Think | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+492: | 01--- Eat   | ----- Think | ----- Think | ---34       | ----- Think |
+493: | 01--- Eat   | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+494: | 01---       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+495: | -1---       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+496: | -----       | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+497: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+498: | ----- Think | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+499: | 0----       | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+500: | 01---       | ----- Think | --2--       | ---34 Eat   | ----- Think |
+501: | 01--- Eat   | ----- Think | --2--       | ---34 Eat   | ----- Think |
+502: | 01--- Eat   | ----- Think | --2--       | ---34       | ----- Think |
+503: | 01--- Eat   | ----- Think | --2--       | ----4       | ----- Think |
+504: | 01--- Eat   | ----- Think | --2--       | -----       | ----- Think |
+505: | 01--- Eat   | ----- Think | --23-       | -----       | ----- Think |
+506: | 01--- Eat   | ----- Think | --23- Eat   | -----       | ----- Think |
+507: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+508: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+	 *** More than one state change per line.
+509: | 01---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+510: | -1---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+511: | -----       | ----- Think | --23- Eat   | ----- Think | ----4       |
+512: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----4       |
+513: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+514: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+515: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+516: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+517: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+518: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+519: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+520: | 0----       | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+521: | 01---       | ----- Think | --23- Eat   | ----4       | ----- Think |
+522: | 01--- Eat   | ----- Think | --23- Eat   | ----4       | ----- Think |
+523: | 01--- Eat   | ----- Think | --23-       | ----4       | ----- Think |
+524: | 01--- Eat   | ----- Think | ---3-       | ----4       | ----- Think |
+525: | 01--- Eat   | ----- Think | -----       | ----4       | ----- Think |
+526: | 01--- Eat   | ----- Think | ----- Think | ----4       | ----- Think |
+527: | 01--- Eat   | ----- Think | ----- Think | ---34       | ----- Think |
+528: | 01--- Eat   | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+529: | 01--- Eat   | --2--       | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+530: | 01---       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+531: | -1---       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+532: | -----       | --2--       | ----- Think | ---34 Eat   | ----- Think |
+533: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+534: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+535: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+536: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+537: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+538: | ----- Think | -12-- Eat   | ----- Think | -----       | ----- Think |
+539: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+540: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+541: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+542: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+543: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+544: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+545: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+546: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+547: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+548: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+549: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+550: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+551: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+552: | ----- Think | -12-- Eat   | ----- Think | -----       | ----- Think |
+553: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+554: | 0----       | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+	 *** More than one state change per line.
+555: | 0----       | -12--       | ----- Think | ----- Think | ----- Think |
+556: | 0----       | --2--       | ----- Think | ----- Think | ----- Think |
+557: | 0----       | -----       | ----- Think | ----- Think | ----- Think |
+558: | 0----       | ----- Think | ----- Think | ----- Think | ----- Think |
+559: | 0----       | ----- Think | --2--       | ----- Think | ----- Think |
+	 *** More than one state change per line.
+560: | 0----       | ----- Think | --23-       | ----- Think | ----- Think |
+561: | 0----       | ----- Think | --23- Eat   | ----- Think | ----- Think |
+562: | 01---       | ----- Think | --23- Eat   | ----- Think | ----- Think |
+563: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----- Think |
+564: | 01--- Eat   | ----- Think | --23- Eat   | ----- Think | ----4       |
+	 *** More than one state change per line.
+565: | 01---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+566: | -1---       | ----- Think | --23- Eat   | ----- Think | ----4       |
+567: | -----       | ----- Think | --23- Eat   | ----- Think | ----4       |
+568: | -----       | ----- Think | --23- Eat   | ----- Think | 0---4       |
+569: | -----       | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+570: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+571: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+572: | ----- Think | ----- Think | ---3-       | ----- Think | 0---4 Eat   |
+573: | ----- Think | ----- Think | -----       | ----- Think | 0---4 Eat   |
+574: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+575: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+576: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+577: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+578: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+579: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+580: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+581: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+582: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+583: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+584: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+585: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+586: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+587: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+588: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+589: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+590: | ----- Think | ----- Think | --23-       | ----4       | ----- Think |
+591: | ----- Think | ----- Think | ---3-       | ----4       | ----- Think |
+592: | ----- Think | ----- Think | -----       | ----4       | ----- Think |
+593: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+594: | ----- Think | --2--       | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+595: | ----- Think | -12--       | ----- Think | ----4       | ----- Think |
+596: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+597: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+598: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+599: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+600: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+601: | ----- Think | -12-- Eat   | ----- Think | -----       | ----- Think |
+602: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+603: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+604: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+605: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+606: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+607: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+608: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+609: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+610: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+611: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+612: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+613: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+614: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+615: | ----- Think | -----       | ----- Think | ---34 Eat   | ----- Think |
+616: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+617: | ----- Think | ----- Think | --2--       | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+618: | ----- Think | ----- Think | --2--       | ---34       | ----- Think |
+619: | ----- Think | ----- Think | --2--       | ----4       | ----- Think |
+620: | ----- Think | ----- Think | --2--       | -----       | ----- Think |
+621: | ----- Think | ----- Think | --2--       | ----- Think | ----- Think |
+622: | ----- Think | ----- Think | --23-       | ----- Think | ----- Think |
+623: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+624: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----4       |
+	 *** More than one state change per line.
+625: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+626: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+627: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+628: | ----- Think | ----- Think | ---3-       | ----- Think | 0---4 Eat   |
+629: | ----- Think | ----- Think | -----       | ----- Think | 0---4 Eat   |
+630: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+631: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+632: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+633: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+634: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+635: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+636: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+637: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+638: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+639: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+640: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+641: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+642: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+643: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+644: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+645: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+646: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+647: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+648: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4       |
+649: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0----       |
+650: | ----- Think | ----- Think | --23- Eat   | ----- Think | -----       |
+651: | ----- Think | ----- Think | --23- Eat   | ----- Think | ----- Think |
+652: | ----- Think | ----- Think | --23- Eat   | ----4       | ----- Think |
+	 *** More than one state change per line.
+653: | ----- Think | ----- Think | --23-       | ----4       | ----- Think |
+654: | ----- Think | ----- Think | ---3-       | ----4       | ----- Think |
+655: | ----- Think | ----- Think | -----       | ----4       | ----- Think |
+656: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+657: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+658: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+659: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+	 *** More than one state change per line.
+660: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+661: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+662: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+663: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+664: | ----- Think | -12-- Eat   | ----- Think | -----       | ----- Think |
+665: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+666: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----4       |
+	 *** More than one state change per line.
+667: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+668: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+669: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+670: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+671: | ----- Think | -----       | ----- Think | ----- Think | 0---4 Eat   |
+672: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+673: | ----- Think | ----- Think | --2--       | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+674: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+675: | ----- Think | ----- Think | --23- Eat   | ----- Think | 0---4 Eat   |
+676: | ----- Think | ----- Think | --23-       | ----- Think | 0---4 Eat   |
+677: | ----- Think | ----- Think | ---3-       | ----- Think | 0---4 Eat   |
+678: | ----- Think | ----- Think | -----       | ----- Think | 0---4 Eat   |
+679: | ----- Think | ----- Think | ----- Think | ----- Think | 0---4 Eat   |
+680: | ----- Think | --2--       | ----- Think | ----- Think | 0---4 Eat   |
+	 *** More than one state change per line.
+681: | ----- Think | -12--       | ----- Think | ----- Think | 0---4 Eat   |
+682: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4 Eat   |
+683: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0---4       |
+684: | ----- Think | -12-- Eat   | ----- Think | ----- Think | 0----       |
+685: | ----- Think | -12-- Eat   | ----- Think | ----- Think | -----       |
+686: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+687: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+688: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+689: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+690: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+691: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+692: | ----- Think | -12-- Eat   | ----- Think | -----       | ----- Think |
+693: | ----- Think | -12-- Eat   | ----- Think | ----- Think | ----- Think |
+694: | ----- Think | -12-- Eat   | ----- Think | ----4       | ----- Think |
+	 *** More than one state change per line.
+695: | ----- Think | -12-- Eat   | ----- Think | ---34       | ----- Think |
+696: | ----- Think | -12-- Eat   | ----- Think | ---34 Eat   | ----- Think |
+697: | ----- Think | -12--       | ----- Think | ---34 Eat   | ----- Think |
+698: | ----- Think | --2--       | ----- Think | ---34 Eat   | ----- Think |
+699: | ----- Think | -----       | ----- Think | ---34 Eat   | ----- Think |
+700: | ----- Think | ----- Think | ----- Think | ---34 Eat   | ----- Think |
+701: | ----- Think | ----- Think | ----- Think | ---34       | ----- Think |
+702: | ----- Think | ----- Think | ----- Think | ----4       | ----- Think |
+703: | ----- Think | ----- Think | ----- Think | -----       | ----- Think |
+704: | ----- Think | ----- Think | ----- Think | ----- Think | ----- Think |
+
+Summary for Output.96892/output.20:
+
+  Line 29: More than one state change per line.
+  Line 37: More than one state change per line.
+  Line 50: More than one state change per line.
+  Line 57: More than one state change per line.
+  Line 64: More than one state change per line.
+  Line 65: More than one state change per line.
+  Line 72: More than one state change per line.
+  Line 81: More than one state change per line.
+  Line 86: More than one state change per line.
+  Line 93: More than one state change per line.
+  Line 106: More than one state change per line.
+  Line 113: More than one state change per line.
+  Line 116: More than one state change per line.
+  Line 127: More than one state change per line.
+  Line 134: More than one state change per line.
+  Line 135: More than one state change per line.
+  Line 148: More than one state change per line.
+  Line 155: More than one state change per line.
+  Line 158: More than one state change per line.
+  Line 163: More than one state change per line.
+  Line 170: More than one state change per line.
+  Line 183: More than one state change per line.
+  Line 189: More than one state change per line.
+  Line 190: More than one state change per line.
+  Line 202: More than one state change per line.
+  Line 207: More than one state change per line.
+  Line 212: More than one state change per line.
+  Line 217: More than one state change per line.
+  Line 226: More than one state change per line.
+  Line 239: More than one state change per line.
+  Line 250: More than one state change per line.
+  Line 253: More than one state change per line.
+  Line 260: More than one state change per line.
+  Line 261: More than one state change per line.
+  Line 274: More than one state change per line.
+  Line 281: More than one state change per line.
+  Line 282: More than one state change per line.
+  Line 289: More than one state change per line.
+  Line 296: More than one state change per line.
+  Line 309: More than one state change per line.
+  Line 316: More than one state change per line.
+  Line 319: More than one state change per line.
+  Line 324: More than one state change per line.
+  Line 333: More than one state change per line.
+  Line 344: More than one state change per line.
+  Line 345: More than one state change per line.
+  Line 352: More than one state change per line.
+  Line 365: More than one state change per line.
+  Line 372: More than one state change per line.
+  Line 379: More than one state change per line.
+  Line 380: More than one state change per line.
+  Line 389: More than one state change per line.
+  Line 400: More than one state change per line.
+  Line 407: More than one state change per line.
+  Line 414: More than one state change per line.
+  Line 417: More than one state change per line.
+  Line 424: More than one state change per line.
+  Line 431: More than one state change per line.
+  Line 442: More than one state change per line.
+  Line 449: More than one state change per line.
+  Line 456: More than one state change per line.
+  Line 463: More than one state change per line.
+  Line 469: More than one state change per line.
+  Line 477: More than one state change per line.
+  Line 488: More than one state change per line.
+  Line 491: More than one state change per line.
+  Line 498: More than one state change per line.
+  Line 499: More than one state change per line.
+  Line 508: More than one state change per line.
+  Line 519: More than one state change per line.
+  Line 520: More than one state change per line.
+  Line 529: More than one state change per line.
+  Line 540: More than one state change per line.
+  Line 547: More than one state change per line.
+  Line 554: More than one state change per line.
+  Line 559: More than one state change per line.
+  Line 564: More than one state change per line.
+  Line 575: More than one state change per line.
+  Line 582: More than one state change per line.
+  Line 589: More than one state change per line.
+  Line 594: More than one state change per line.
+  Line 603: More than one state change per line.
+  Line 610: More than one state change per line.
+  Line 617: More than one state change per line.
+  Line 624: More than one state change per line.
+  Line 631: More than one state change per line.
+  Line 638: More than one state change per line.
+  Line 645: More than one state change per line.
+  Line 652: More than one state change per line.
+  Line 659: More than one state change per line.
+  Line 666: More than one state change per line.
+  Line 673: More than one state change per line.
+  Line 680: More than one state change per line.
+  Line 687: More than one state change per line.
+  Line 694: More than one state change per line.
+
+<exit ok>
+
+
+completed all.
+[snamboot@unix3 asgn03]$ 
